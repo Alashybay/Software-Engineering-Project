@@ -1,4 +1,4 @@
-import { AppShell, Burger, Group, NavLink, Title } from "@mantine/core";
+import { AppShell, Burger, Container, Group, NavLink, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -66,7 +66,11 @@ export function Layout({ children }: AppLayoutProps): JSX.Element {
           color="red"
         />
       </AppShell.Navbar>
-      <AppShell.Main>{children}</AppShell.Main>
+      <AppShell.Main>
+        <Container size="lg">
+        {children}
+        </Container>
+      </AppShell.Main>
     </AppShell>
   );
 }
