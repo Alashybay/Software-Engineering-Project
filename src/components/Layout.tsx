@@ -1,4 +1,11 @@
-import { AppShell, Burger, Container, Group, NavLink, Title } from "@mantine/core";
+import {
+  AppShell,
+  Burger,
+  Container,
+  Group,
+  NavLink,
+  Title,
+} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -6,8 +13,6 @@ import {
   IconDoorExit,
   IconHome,
   IconMenu2,
-  IconSettings,
-  IconUser,
   IconUsersGroup,
 } from "@tabler/icons-react";
 
@@ -20,8 +25,6 @@ const routes = [
   { title: "Posts", icon: <IconBooks />, path: "/posts" },
   { title: "Menu", icon: <IconMenu2 />, path: "/menu" },
   { title: "Users", icon: <IconUsersGroup />, path: "/users" },
-  { title: "Profile", icon: <IconUser />, path: "/profile" },
-  { title: "Settings", icon: <IconSettings />, path: "/settings" },
 ];
 
 export function Layout({ children }: AppLayoutProps): JSX.Element {
@@ -67,9 +70,7 @@ export function Layout({ children }: AppLayoutProps): JSX.Element {
         />
       </AppShell.Navbar>
       <AppShell.Main>
-        <Container size="lg">
-        {children}
-        </Container>
+        <Container size="lg">{children}</Container>
       </AppShell.Main>
     </AppShell>
   );
