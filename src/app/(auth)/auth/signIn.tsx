@@ -1,8 +1,7 @@
 "use client";
 
-import { Auth } from "@/src/components/auth";
-import { Text } from "@mantine/core";
+import { Login } from "@/src/components/login";
 
 export default function Page() {
-  return <Auth />;
+  return <Login />;
 }

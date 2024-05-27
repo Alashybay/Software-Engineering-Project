@@ -10,13 +10,22 @@ import {
   Group,
   Button,
 } from "@mantine/core";
-import classes from "../../styles/Auth.module.css";
+import classes from "../../styles/Login.module.css";
+import { useCallback } from "react";
+import { useRouter } from "next/navigation";
 
-export function Auth() {
+export function Login() {
+  const router = useRouter();
+
+  const handleClick = useCallback(() => {
+    // router.push("/forgotPassword");
+    console.log("redirected to forgotPassword page");
+  }, [router]);
+
   return (
     <Container size={420} my={40}>
       <Title ta="center" className={classes.title}>
-        Welcome back!
+        Food Recepies
       </Title>
       <Text c="dimmed" size="sm" ta="center" mt={5}>
         Do not have an account yet?{" "}
@@ -35,7 +44,7 @@ export function Auth() {
         />
         <Group justify="space-between" mt="lg">
           <Checkbox label="Remember me" />
-          <Anchor component="button" size="sm">
+          <Anchor component="button" size="sm" onClick={handleClick}>
             Forgot password?
           </Anchor>
         </Group>

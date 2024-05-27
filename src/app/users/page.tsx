@@ -1,6 +1,8 @@
 "use client";
 
 import { Layout } from "@/src/components/Layout";
+import { Login } from "@/src/components/login";
+import { Register } from "@/src/components/register";
 import {
   Avatar,
   Badge,
@@ -121,22 +123,23 @@ export default function Page() {
     </Table.Tr>
   ));
 
-  return (
-    <Layout>
-      <Table.ScrollContainer minWidth={800}>
-        <Table verticalSpacing="sm">
-          <Table.Thead>
-            <Table.Tr>
-              <Table.Th>User</Table.Th>
-              <Table.Th>Role</Table.Th>
-              <Table.Th>Email</Table.Th>
-              <Table.Th>Phone</Table.Th>
-              <Table.Th />
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>{rows}</Table.Tbody>
-        </Table>
-      </Table.ScrollContainer>
-    </Layout>
-  );
+  // return (
+  //   <Layout>
+  //     <Table.ScrollContainer minWidth={800}>
+  //       <Table verticalSpacing="sm">
+  //         <Table.Thead>
+  //           <Table.Tr>
+  //             <Table.Th>User</Table.Th>
+  //             <Table.Th>Role</Table.Th>
+  //             <Table.Th>Email</Table.Th>
+  //             <Table.Th>Phone</Table.Th>
+  //             <Table.Th />
+  //           </Table.Tr>
+  //         </Table.Thead>
+  //         <Table.Tbody>{rows}</Table.Tbody>
+  //       </Table>
+  //     </Table.ScrollContainer>
+  //   </Layout>
+  // );
+  return <Register />;
 }
