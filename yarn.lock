@@ -150,10 +150,10 @@
   resolved "https://registry.yarnpkg.com/@mantine/carousel/-/carousel-7.9.1.tgz#97234bd349c2b0ddeaff484183dc7a5949a4f053"
   integrity sha512-8Z893KdrfCTXh941aHS8y4sN7rbys3Hi2sYulqyRzU44Hm6k2gUDiSYccU6KTBWTSw/rzv+qRkvcKIukYM8CTg==
 
-"@mantine/charts@^7.9.1":
-  version "7.9.1"
-  resolved "https://registry.yarnpkg.com/@mantine/charts/-/charts-7.9.1.tgz#7d533069e6c2f3f6149d93175ea2d0983a6fd657"
-  integrity sha512-54IULzkDg+D5wsh4lV/pShxdph6v0di/jZTLSTj5k6EDTTMHPNvkSzPlyPwMjjludojDulT7PfS6fwczFDDhyg==
+"@mantine/charts@^7.10.0":
+  version "7.10.0"
+  resolved "https://registry.yarnpkg.com/@mantine/charts/-/charts-7.10.0.tgz#10aad7cee7a5a90eaff296d4ad1448672faa186a"
+  integrity sha512-WgSIVWTtKQ3LL5oWY+UevjuMRjMf1VtsxVTUSgz4qi3JHPIBjlcybcsZ1rIjP9jfDbaYNAlsTtgnRvEjPyr3Zw==
 
 "@mantine/code-highlight@^7.9.1":
   version "7.9.1"

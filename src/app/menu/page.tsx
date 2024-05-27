@@ -18,7 +18,6 @@ import { Layout } from "@/src/components/Layout";
 import { useRouter } from "next/navigation";
 
 const mockdata = [
-  { title: "FAQ", icon: IconCreditCard, color: "violet", link: "menu/faq" },
   {
     title: "Support",
     icon: Icon24Hours,
@@ -30,12 +29,6 @@ const mockdata = [
     icon: IconCoin,
     color: "green",
     link: "menu/subscriptions",
-  },
-  {
-    title: "Settings",
-    icon: IconSettings,
-    color: "cyan",
-    link: "/settings",
   },
   {
     title: "Posts",
