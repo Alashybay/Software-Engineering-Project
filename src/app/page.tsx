@@ -1,109 +1,109 @@
 "use client";
 
 import {
-  ThemeIcon,
-  Text,
-  Title,
   Container,
-  SimpleGrid,
-  rem,
   Divider,
+  Grid,
+  List,
+  Paper,
+  rem,
+  SimpleGrid,
+  Text,
+  ThemeIcon,
+  Title,
 } from "@mantine/core";
-import {
-  IconGauge,
-  IconCookie,
-  IconUser,
-  IconMessage2,
-  IconLock,
-} from "@tabler/icons-react";
 import { Layout } from "../components/Layout";
+import { BarChart, LineChart, PieChart } from "@mantine/charts";
+import { IconCircleCheck } from "@tabler/icons-react";
+import {
+  deviceUsageData,
+  userData,
+  userLocationData,
+} from "../mocks/statistics.mock";
 
-export const MOCKDATA = [
-  {
-    icon: IconGauge,
-    title: "Extreme performance",
-    description:
-      "This dust is actually a powerful poison that will even make a pro wrestler sick, Regice cloaks itself with frigid air of -328 degrees Fahrenheit",
-  },
-  {
-    icon: IconUser,
-    title: "Privacy focused",
-    description:
-      "People say it can run at the same speed as lightning striking, Its icy body is so cold, it will not melt even if it is immersed in magma",
-  },
-  {
-    icon: IconCookie,
-    title: "No third parties",
-    description:
-      "They’re popular, but they’re rare. Trainers who show them off recklessly may be targeted by thieves",
-  },
-  {
-    icon: IconLock,
-    title: "Secure by default",
-    description:
-      "Although it still can’t fly, its jumping power is outstanding, in Alola the mushrooms on Paras don’t grow up quite right",
-  },
-  {
-    icon: IconMessage2,
-    title: "24/7 Support",
-    description:
-      "Rapidash usually can be seen casually cantering in the fields and plains, Skitty is known to chase around after its own tail",
-  },
-];
-
-interface FeatureProps {
-  icon: React.FC<any>;
-  title: React.ReactNode;
-  description: React.ReactNode;
-}
-
-export function Feature({ icon: Icon, title, description }: FeatureProps) {
-  return (
-    <div>
-      <ThemeIcon variant="light" size={40} radius={40}>
-        <Icon style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
-      </ThemeIcon>
-      <Text mt="sm" mb={7}>
-        {title}
-      </Text>
-      <Text size="sm" c="dimmed" lh={1.6}>
-        {description}
-      </Text>
-    </div>
-  );
-}
+const PRIMARY_COL_HEIGHT = rem(300);
 
 export default function Page() {
-  const features = MOCKDATA.map((feature, index) => (
-    <Feature {...feature} key={index} />
-  ));
-
+  const SECONDARY_COL_HEIGHT = `calc(${PRIMARY_COL_HEIGHT} / 2 - var(--mantine-spacing-md) / 2)`;
   return (
     <Layout>
       <>
-      <Container mt="xl">
-        <Title ta="center">
-          Integrate effortlessly with any technology stack
+        <Title order={2} ta="center">
+          Dashboard Overview
         </Title>
+        <Text c="gray" ta="center">
+          Analyze user contributions and gain valuable insights.
+        </Text>
 
-        <Container size={560} p={0}>
-          <Text size="sm" ta="center">
-            Every once in a while, you’ll see a Golbat that’s missing some
-            fangs. This happens when hunger drives it to try biting a Steel-type
-            Pokémon.
-          </Text>
+        <Divider my="md" />
+        <Container my="md">
+          <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
+            <Paper h="auto" radius="md" p="md" withBorder>
+              <LineChart
+                h={PRIMARY_COL_HEIGHT}
+                data={userData}
+                withLegend
+                dataKey="month"
+                series={[{ name: "Users", color: "green" }]}
+                tickLine="y"
+              />
+            </Paper>
+            <Grid gutter="md">
+              <Grid.Col>
+                <Paper h="auto" radius="md" p="md" withBorder>
+                  <BarChart
+                    h={SECONDARY_COL_HEIGHT}
+                    data={deviceUsageData}
+                    withLegend
+                    dataKey="month"
+                    series={[
+                      { name: "Users", color: "violet.6" },
+                      { name: "Posts", color: "blue.6" },
+                      { name: "Comments", color: "teal.6" },
+                    ]}
+                    tickLine="y"
+                  />
+                </Paper>
+              </Grid.Col>
+              <Grid.Col span={6}>
+                <Paper h="auto" radius="md" p="md" withBorder>
+                  <PieChart
+                    h={SECONDARY_COL_HEIGHT}
+                    withLabelsLine
+                    labelsPosition="inside"
+                    labelsType="percent"
+                    withLabels
+                    withTooltip
+                    data={userLocationData}
+                  />
+                </Paper>
+              </Grid.Col>
+              <Grid.Col span={6}>
+                <Paper h="auto" radius="md" p="md" withBorder>
+                  <List
+                    spacing="xs"
+                    size="sm"
+                    center
+                    icon={
+                      <ThemeIcon color="teal" size={24} radius="xl">
+                        <IconCircleCheck
+                          style={{ width: rem(16), height: rem(16) }}
+                        />
+                      </ThemeIcon>
+                    }
+                  >
+                    <List.Item>Collect data from sources</List.Item>
+                    <List.Item>Clean and preprocess data</List.Item>
+                    <List.Item>Analyze data patterns</List.Item>
+                    <List.Item>Build statistical models</List.Item>
+                    <List.Item>Create reports and dashboards</List.Item>
+                    <List.Item>Implement data pipelines</List.Item>
+                  </List>
+                </Paper>
+              </Grid.Col>
+            </Grid>
+          </SimpleGrid>
         </Container>
-
-        <SimpleGrid
-          mt={60}
-          cols={{ base: 1, sm: 2, md: 3 }}
-          spacing={{ base: "xl", md: 50 }}
-          verticalSpacing={{ base: "xl", md: 50 }}
-        >
-          {features}
-        </SimpleGrid>
-      </Container>
-      <Divider mt="xl" />
       </>
     </Layout>
   );
