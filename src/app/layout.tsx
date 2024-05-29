@@ -1,7 +1,8 @@
 import "@mantine/core/styles.css";
-import '@mantine/charts/styles.css';
+import "@mantine/charts/styles.css";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
+import { ProvidersWrapper } from "../providers";
 
 export const metadata = {
   title: "My project",
@@ -19,10 +20,12 @@ export default function RootLayout({
         <ColorSchemeScript />
       </head>
       <body>
-        <MantineProvider>
-          <Notifications />
-          {children}
-        </MantineProvider>
+        <ProvidersWrapper>
+          <MantineProvider>
+            <Notifications />
+            {children}
+          </MantineProvider>
+        </ProvidersWrapper>
       </body>
     </html>
   );

@@ -10,7 +10,7 @@ import {
   Group,
   Button,
 } from "@mantine/core";
-import classes from "../../styles/Login.module.css";
+import classes from "../styles/Login.module.css";
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
 
@@ -18,7 +18,7 @@ export function Login() {
   const router = useRouter();
 
   const handleClick = useCallback(() => {
-    // router.push("/forgotPassword");
+    router.push("/forgotPassword");
     console.log("redirected to forgotPassword page");
   }, [router]);
 
@@ -29,7 +29,11 @@ export function Login() {
       </Title>
       <Text c="dimmed" size="sm" ta="center" mt={5}>
         Do not have an account yet?{" "}
-        <Anchor size="sm" component="button">
+        <Anchor
+          size="sm"
+          component="button"
+          onClick={() => router.push("/signUp")}
+        >
           Create account
         </Anchor>
       </Text>

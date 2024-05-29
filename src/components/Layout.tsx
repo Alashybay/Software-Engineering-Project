@@ -25,7 +25,6 @@ const routes = [
   { title: "Posts", icon: <IconBooks />, path: "/posts" },
   { title: "Menu", icon: <IconMenu2 />, path: "/menu" },
   { title: "Users", icon: <IconUsersGroup />, path: "/users" },
-  { title: "Login", icon: <IconUsersGroup />, path: "/login" },
 ];
 
 export function Layout({ children }: AppLayoutProps): JSX.Element {
