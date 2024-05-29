@@ -10,7 +10,7 @@ import {
   Group,
   Button,
 } from "@mantine/core";
-import classes from "../styles/Login.module.css";
+import classes from "../../../styles/Login.module.css";
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
 
@@ -31,8 +31,7 @@ export function Login() {
         Do not have an account yet?{" "}
         <Anchor
           size="sm"
-          component="button"
-          onClick={() => router.push("/signUp")}
+          href="/signUp"
         >
           Create account
         </Anchor>
