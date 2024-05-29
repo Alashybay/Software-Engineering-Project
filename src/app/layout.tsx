@@ -20,12 +20,12 @@ export default function RootLayout({
         <ColorSchemeScript />
       </head>
       <body>
-        <ProvidersWrapper>
-          <MantineProvider>
-            <Notifications />
-            {children}
-          </MantineProvider>
-        </ProvidersWrapper>
+        {/* <ProvidersWrapper> */}
+        <MantineProvider>
+          <Notifications />
+          {children}
+        </MantineProvider>
+        {/* </ProvidersWrapper> */}
       </body>
     </html>
   );

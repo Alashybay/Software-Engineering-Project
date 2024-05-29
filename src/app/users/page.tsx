@@ -1,8 +1,6 @@
 "use client";
 
 import { Layout } from "@/src/components/Layout";
-import { Login } from "@/src/components/login";
-import { Register } from "@/src/components/register";
 import {
   Avatar,
   Badge,
@@ -117,7 +115,10 @@ export default function Page() {
 
           <Tooltip label="Delete user" position="bottom" withArrow>
             <ActionIcon variant="subtle" color="red">
-              <IconTrash style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+              <IconTrash
+                style={{ width: rem(16), height: rem(16) }}
+                stroke={1.5}
+              />
             </ActionIcon>
           </Tooltip>
         </Group>
@@ -125,23 +126,22 @@ export default function Page() {
     </Table.Tr>
   ));
 
-  // return (
-  //   <Layout>
-  //     <Table.ScrollContainer minWidth={800}>
-  //       <Table verticalSpacing="sm">
-  //         <Table.Thead>
-  //           <Table.Tr>
-  //             <Table.Th>User</Table.Th>
-  //             <Table.Th>Role</Table.Th>
-  //             <Table.Th>Email</Table.Th>
-  //             <Table.Th>Phone</Table.Th>
-  //             <Table.Th />
-  //           </Table.Tr>
-  //         </Table.Thead>
-  //         <Table.Tbody>{rows}</Table.Tbody>
-  //       </Table>
-  //     </Table.ScrollContainer>
-  //   </Layout>
-  // );
-  return <Register />;
+  return (
+    <Layout>
+      <Table.ScrollContainer minWidth={800}>
+        <Table verticalSpacing="sm">
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th>User</Table.Th>
+              <Table.Th>Role</Table.Th>
+              <Table.Th>Email</Table.Th>
+              <Table.Th>Phone</Table.Th>
+              <Table.Th />
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>{rows}</Table.Tbody>
+        </Table>
+      </Table.ScrollContainer>
+    </Layout>
+  );
 }
