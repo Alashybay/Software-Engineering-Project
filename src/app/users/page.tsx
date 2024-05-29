@@ -13,6 +13,7 @@ import {
   Anchor,
   rem,
   Select,
+  Tooltip,
 } from "@mantine/core";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 
@@ -104,20 +105,21 @@ export default function Page() {
       </Table.Td>
       <Table.Td>
         <Group gap={0} justify="flex-end">
-          <ActionIcon variant="subtle" color="gray">
-            <IconPencil
-              style={{ width: rem(16), height: rem(16) }}
-              stroke={1.5}
-              onClick={() => handleRoleChange(item.role)}
-            />
-          </ActionIcon>
+          <Tooltip label="Change role" position="left" withArrow>
+            <ActionIcon variant="subtle" color="gray">
+              <IconPencil
+                style={{ width: rem(16), height: rem(16) }}
+                stroke={1.5}
+                onClick={() => handleRoleChange(item.role)}
+              />
+            </ActionIcon>
+          </Tooltip>
 
-          <ActionIcon variant="subtle" color="red">
-            <IconTrash
-              style={{ width: rem(16), height: rem(16) }}
-              stroke={1.5}
-            />
-          </ActionIcon>
+          <Tooltip label="Delete user" position="bottom" withArrow>
+            <ActionIcon variant="subtle" color="red">
+              <IconTrash style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+            </ActionIcon>
+          </Tooltip>
         </Group>
       </Table.Td>
     </Table.Tr>
