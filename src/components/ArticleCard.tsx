@@ -12,8 +12,10 @@ import {
   rem,
 } from "@mantine/core";
 import classes from "../styles/ArticleCard.module.css";
+import { useRouter } from "next/navigation";
 
 export default function ArticleCard() {
+  const router = useRouter();
   const linkProps = {
     href: "https://mantine.dev",
     target: "_blank",
@@ -22,7 +24,7 @@ export default function ArticleCard() {
   const theme = useMantineTheme();
 
   return (
-    <Card withBorder radius="md" className={classes.card}>
+    <Card withBorder radius="md" className={classes.card} onClick={() => router.push(`/posts/${12}`)}>
       <Card.Section>
         <a {...linkProps}>
           <Image src="https://i.imgur.com/Cij5vdL.png" height={180}/>
