@@ -1,6 +1,7 @@
 "use client";
 
 import { Layout } from "@/src/components/Layout";
+import useUsers from "@/src/hooks/useUsers";
 import {
   Avatar,
   Badge,
@@ -12,51 +13,9 @@ import {
   rem,
   Select,
   Tooltip,
+  Skeleton,
 } from "@mantine/core";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
-
-const data = [
-  {
-    avatar:
-      "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png",
-    name: "Robert Wolfkisser",
-    role: "Admin",
-    email: "rob_wolf@gmail.com",
-    phone: "+44 (452) 886 09 12",
-  },
-  {
-    avatar:
-      "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-7.png",
-    name: "Jill Jailbreaker",
-    role: "Guset",
-    email: "jj@breaker.com",
-    phone: "+44 (934) 777 12 76",
-  },
-  {
-    avatar:
-      "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-2.png",
-    name: "Henry Silkeater",
-    role: "Guset",
-    email: "henry@silkeater.io",
-    phone: "+44 (901) 384 88 34",
-  },
-  {
-    avatar:
-      "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-3.png",
-    name: "Bill Horsefighter",
-    role: "Guest",
-    email: "bhorsefighter@gmail.com",
-    phone: "+44 (667) 341 45 22",
-  },
-  {
-    avatar:
-      "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-10.png",
-    name: "Jeremy Footviewer",
-    role: "Guest",
-    email: "jeremy@foot.dev",
-    phone: "+44 (881) 245 65 65",
-  },
-];
 
 const rolesData = ["Guest", "Admin"];
 
@@ -76,30 +35,42 @@ const roleColors: Record<string, string> = {
 };
 
 export default function Page() {
-  const rows = data.map((item) => (
-    <Table.Tr key={item.name}>
+  const { users, loading } = useUsers();
+  if (loading) {
+    return <Skeleton />;
+  }
+
+  const rows = users.map((item) => (
+    <Table.Tr key={item?.firstname}>
       <Table.Td>
         <Group gap="sm">
-          <Avatar size={30} src={item.avatar} radius={30} />
+          <Avatar
+            size={30}
+            src={
+              item?.avatar ??
+              "https://variety.com/wp-content/uploads/2021/04/Avatar.jpg?w=800&h=533&crop=1"
+            }
+            radius={30}
+          />
           <Text fz="sm" fw={500}>
-            {item.name}
+            {item?.firstname}
           </Text>
         </Group>
       </Table.Td>
 
       <Table.Td>
-        <Badge color={roleColors[item.role.toLowerCase()]} variant="light">
-          {item.role}
+        <Badge color={roleColors[item?.role ?? "user"]} variant="light">
+          {item?.role}
         </Badge>
       </Table.Td>
 
       <Table.Td>
         <Anchor component="button" size="sm">
-          {item.email}
+          {item?.email}
         </Anchor>
       </Table.Td>
       <Table.Td>
-        <Text fz="sm">{item.phone}</Text>
+        <Text fz="sm">{item?.phone}</Text>
       </Table.Td>
       <Table.Td>
         <Group gap={0} justify="flex-end">
@@ -108,7 +79,7 @@ export default function Page() {
               <IconPencil
                 style={{ width: rem(16), height: rem(16) }}
                 stroke={1.5}
-                onClick={() => handleRoleChange(item.role)}
+                onClick={() => handleRoleChange(item?.role ?? "user")}
               />
             </ActionIcon>
           </Tooltip>

@@ -1,16 +1,6 @@
 import { useState, useEffect } from 'react';
+import { User } from '../typings/user';
 
-interface User {
-    id: number;
-    firstname: string;
-    middlename: string | null;
-    surname: string;
-    email: string;
-    password: string;
-    phone: string | null;
-    is_admin: number;
-    preferences: string;
-  }
 
 
 
