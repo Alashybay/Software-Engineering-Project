@@ -1,7 +1,7 @@
 "use client";
 
 import { Layout } from "@/src/components/Layout";
-import { useGetUsers } from "@/src/hooks/useGetUsers";
+import { useFetchUsers } from "@/src/hooks/useGetUsers";
 import {
   Avatar,
   Badge,
@@ -35,9 +35,9 @@ const roleColors: Record<string, string> = {
 };
 
 export default function Page() {
-  const { data: users, isLoading, error } = useGetUsers();
+  const { data: users, isLoading, error } = useFetchUsers();
 
-  if (!isLoading) {
+  if (isLoading) {
     return (
       <Layout>
         <Skeleton height={500} width="100%" />
