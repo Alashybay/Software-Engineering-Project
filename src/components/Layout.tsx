@@ -16,6 +16,8 @@ import {
   IconUsersGroup,
 } from "@tabler/icons-react";
 
+import { signOut as nextAuthSignOut, useSession } from "next-auth/react";
+
 interface AppLayoutProps {
   children: JSX.Element;
 }
@@ -29,11 +31,13 @@ const routes = [
 
 export function Layout({ children }: AppLayoutProps): JSX.Element {
   const [opened, { toggle }] = useDisclosure();
+
   const router = useRouter();
   const navigation = usePathname();
 
   const handleLogout = () => {
     alert("Logout, you sure about that?");
+    nextAuthSignOut();
   };
 
   return (
