@@ -1,7 +1,7 @@
 "use client";
 
 import { Layout } from "@/src/components/Layout";
-import useUsers from "@/src/hooks/useUsers";
+import { useGetUsers } from "@/src/hooks/useGetUsers";
 import {
   Avatar,
   Badge,
@@ -35,12 +35,17 @@ const roleColors: Record<string, string> = {
 };
 
 export default function Page() {
-  const { users, loading } = useUsers();
-  if (loading) {
-    return <Skeleton />;
+  const { data: users, isLoading, error } = useGetUsers();
+
+  if (!isLoading) {
+    return (
+      <Layout>
+        <Skeleton height={500} width="100%" />
+      </Layout>
+    );
   }
 
-  const rows = users.map((item) => (
+  const rows = users?.map((item) => (
     <Table.Tr key={item?.firstname}>
       <Table.Td>
         <Group gap="sm">

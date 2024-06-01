@@ -17,7 +17,7 @@ import {
 } from "@tabler/icons-react";
 
 import { signOut as nextAuthSignOut, useSession } from "next-auth/react";
-import useUsers from "../hooks/useUsers";
+import { useGetUsers } from "../hooks/useGetUsers";
 
 interface AppLayoutProps {
   children: JSX.Element;
@@ -33,7 +33,7 @@ const routes = [
 export function Layout({ children }: AppLayoutProps): JSX.Element {
   const [opened, { toggle }] = useDisclosure();
 
-  const { users, loading, error } = useUsers();
+  const { data: users } = useGetUsers();
 
   console.log(users);
 
