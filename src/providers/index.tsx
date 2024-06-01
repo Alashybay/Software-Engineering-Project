@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name */
 import React from "react";
-import { AuthProvider } from "./auth/authProvider";
+import AuthProvider from "./auth/authProvider";
 
 const compose = (providers: React.FC<{ children: React.ReactNode }>[]) =>
   providers.reduce((Prev, Curr) => ({ children }) => {
