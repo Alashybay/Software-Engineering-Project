@@ -1,6 +1,7 @@
 "use client";
 
 import { Layout } from "@/src/components/Layout";
+import { UserRoleModal } from "@/src/components/modals/role";
 import { useDeleteUser } from "@/src/hooks/useDeleteUser";
 import { useFetchUsers } from "@/src/hooks/useGetUsers";
 import { User } from "@/src/typings/user";
@@ -17,8 +18,9 @@ import {
   Tooltip,
   Skeleton,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 
 const rolesData = ["Guest", "Admin"];
 
@@ -38,13 +40,21 @@ const roleColors: Record<string, string> = {
 };
 
 export default function Page() {
+  const [selectedUser, setSelectedUser] = useState<User | undefined>(undefined);
+  const [opened, { open, close }] = useDisclosure(false);
   const { data: users, isLoading, error } = useFetchUsers();
   const deleteUserMutation = useDeleteUser();
 
+  const handleOpen = useCallback(
+    (user?: User) => {
+      open();
+      setSelectedUser(user);
+    },
+    [open]
+  );
   const handleDelete = useCallback(
     (userId: number) => {
       deleteUserMutation.mutate(userId);
-      console.log("deleted");
     },
     [deleteUserMutation]
   );
@@ -96,7 +106,7 @@ export default function Page() {
               <IconPencil
                 style={{ width: rem(16), height: rem(16) }}
                 stroke={1.5}
-                onClick={() => handleRoleChange(item?.role ?? "user")}
+                onClick={() => handleOpen(item)}
               />
             </ActionIcon>
           </Tooltip>
@@ -119,20 +129,23 @@ export default function Page() {
 
   return (
     <Layout>
-      <Table.ScrollContainer minWidth={800}>
-        <Table verticalSpacing="sm">
-          <Table.Thead>
-            <Table.Tr>
-              <Table.Th>User</Table.Th>
-              <Table.Th>Role</Table.Th>
-              <Table.Th>Email</Table.Th>
-              <Table.Th>Phone</Table.Th>
-              <Table.Th />
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>{rows}</Table.Tbody>
-        </Table>
-      </Table.ScrollContainer>
+      <>
+        <Table.ScrollContainer minWidth={800}>
+          <Table verticalSpacing="sm">
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th>User</Table.Th>
+                <Table.Th>Role</Table.Th>
+                <Table.Th>Email</Table.Th>
+                <Table.Th>Phone</Table.Th>
+                <Table.Th />
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>{rows}</Table.Tbody>
+          </Table>
+        </Table.ScrollContainer>
+        <UserRoleModal opened={opened} onClose={close} user={selectedUser} />
+      </>
     </Layout>
   );
 }

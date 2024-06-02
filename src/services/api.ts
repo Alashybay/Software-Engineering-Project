@@ -22,3 +22,16 @@ export const deleteUser = async (userId: number): Promise<Record<string, any>> =
         throw new Error(`Failed to delete user: ${error.message}`);
     }
 };
+
+export const updateUser = async (userId: number, updatedUserInfo: Partial<User>): Promise<Record<string, any>> => {
+    if (!userId) {
+        throw new Error("User ID is required");
+    }
+
+    try {
+        const response: AxiosResponse<Record<string, any>> = await api.put(`/users/${userId}`, updatedUserInfo);
+        return response.data;
+    } catch (error:any) {
+        throw new Error(`Failed to update user: ${error.message}`);
+    }
+};
