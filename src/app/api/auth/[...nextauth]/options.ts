@@ -1,3 +1,4 @@
+import axios from 'axios';
 import type { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
@@ -6,7 +7,7 @@ export const options: NextAuthOptions = {
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-                username: {
+                email: {
                     label: "email:",
                     type: "text",
                     placeholder: "email"
@@ -17,22 +18,30 @@ export const options: NextAuthOptions = {
                     placeholder: "password"
                 }
             },
-            async authorize(credentials) {
-                // This is where you need to retrieve user data
-                // to verify with credentials
-                // Docs: https://next-auth.js.org/configuration/providers/credentials
-                const user = { id: "42", name: "demo", password: "demo" }
+            async authorize(credentials?: {email: string, password:string}) {
+                if(!credentials) return null
+                console.log(credentials);
 
-                if (credentials?.username === user.name && credentials?.password === user.password) {
-                    return user
-                } else {
-                    return null
+                try {
+                    // Make API call to authenticate user
+                    const response = await axios.post('/api/auth/signin', {
+                        email: credentials.email,
+                        password: credentials.password
+                    });
+
+                    // If authentication successful, return user data
+                    return response.data.user;
+                } catch (error) {
+                    // If authentication fails, return null
+                    console.error("Authentication error:", error);
+                    return null;
                 }
             }
         })
     ],
     secret: process.env.NEXTAUTH_SECRET,
-    pages:{
-        signIn: '/signIn'
-    }
+    // pages:{
+    //     // signIn: '/signIn',
+    //     // newUser: '/signUp'
+    // }
 }

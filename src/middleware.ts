@@ -8,19 +8,12 @@ export default withAuth(
         // console.log(request.nextUrl.pathname)
         // console.log(request.nextauth.token)
 
-        if (request.nextUrl.pathname.startsWith("/extra")
-            && request.nextauth.token?.role !== "admin") {
-            return NextResponse.rewrite(
-                new URL("/denied", request.url)
-            )
-        }
-
-        if (request.nextUrl.pathname.startsWith("/client")
-            && request.nextauth.token?.role !== "admin"
-            && request.nextauth.token?.role !== "manager") {
-            return NextResponse.rewrite(
-                new URL("/denied", request.url)
-            )
+        if (request.nextauth.token) {
+            // If user is authenticated, continue with the request
+            return NextResponse.next();
+        } else {
+            // If user is not authenticated, redirect to login page
+            return NextResponse.redirect("/signIn");
         }
     },
     {
@@ -32,4 +25,7 @@ export default withAuth(
 
 // Applies next-auth only to matching routes - can be regex
 // Ref: https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
-export const config = { matcher: ["/extra", "/client", "/dashboard"] }
+export const config = {
+    matcher: ["/"],
+    denyUnauthenticated: true
+};

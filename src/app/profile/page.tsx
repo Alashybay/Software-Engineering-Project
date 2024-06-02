@@ -1,9 +1,23 @@
 "use client";
 
 import { Layout } from "@/src/components/Layout";
-import { Button, Group, NumberInput, Stack, Text, TextInput } from "@mantine/core";
+import {
+  Button,
+  Group,
+  NumberInput,
+  Stack,
+  Text,
+  TextInput,
+} from "@mantine/core";
+import { useSession } from "next-auth/react";
 
 export default function Page() {
+  const { data } = useSession();
+  console.log(data);
+
+  //TODO add getUserData
+  // TODO populate fields
+
   return (
     <Layout>
       <Stack>

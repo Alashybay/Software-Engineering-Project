@@ -13,21 +13,31 @@ import {
 } from "@mantine/core";
 import classes from "../styles/ArticleCard.module.css";
 import { useRouter } from "next/navigation";
+import { useFetchUsers } from "../hooks/useGetUsers";
 
-export default function ArticleCard() {
-  const router = useRouter();
-  const linkProps = {
-    href: "https://mantine.dev",
-    target: "_blank",
-    rel: "noopener noreferrer",
-  };
+const linkProps = {
+  href: "https://mantine.dev",
+  target: "_blank",
+  rel: "noopener noreferrer",
+};
+
+export default function ArticleCard(props: { post: Post }) {
   const theme = useMantineTheme();
+  const router = useRouter();
+  const post = props.post;
+
+  const { data: userData } = useFetchUsers({ id: post.author_id });
 
   return (
-    <Card withBorder radius="md" className={classes.card} onClick={() => router.push(`/posts/${12}`)}>
+    <Card
+      withBorder
+      radius="md"
+      className={classes.card}
+      onClick={() => router.push(`/posts/${post.id}`)}
+    >
       <Card.Section>
         <a {...linkProps}>
-          <Image src="https://i.imgur.com/Cij5vdL.png" height={180}/>
+          <Image src="https://i.imgur.com/Cij5vdL.png" height={180} />
         </a>
       </Card.Section>
 
@@ -40,15 +50,11 @@ export default function ArticleCard() {
       </Badge>
 
       <Text className={classes.title} fw={500} component="a" {...linkProps}>
-        Resident Evil Village review
+        {post.title}
       </Text>
 
       <Text fz="sm" c="dimmed" lineClamp={4}>
-        Resident Evil Village is a direct sequel to 2017’s Resident Evil 7, but
-        takes a very different direction to its predecessor, namely the fact
-        that this time round instead of fighting against various mutated
-        zombies, you’re now dealing with more occult enemies like werewolves and
-        vampires.
+        {post?.description}
       </Text>
 
       <Group justify="space-between" className={classes.footer}>
@@ -60,7 +66,7 @@ export default function ArticleCard() {
             mr="xs"
           />
           <Text fz="sm" inline>
-            Bill Wormeater
+            {userData?.[0].firstname} {userData?.[0].surname}
           </Text>
         </Center>
 

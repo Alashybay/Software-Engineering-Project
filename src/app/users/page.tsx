@@ -14,25 +14,12 @@ import {
   ActionIcon,
   Anchor,
   rem,
-  Select,
   Tooltip,
   Skeleton,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { useCallback, useState } from "react";
-
-const rolesData = ["Guest", "Admin"];
-
-const handleRoleChange = (role: string) => {
-  return (
-    <Select
-      data={rolesData}
-      defaultValue={role}
-      onChange={(value) => console.log(value)}
-    />
-  );
-};
 
 const roleColors: Record<string, string> = {
   guest: "blue",

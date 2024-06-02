@@ -35,3 +35,8 @@ export const updateUser = async (userId: number, updatedUserInfo: Partial<User>)
         throw new Error(`Failed to update user: ${error.message}`);
     }
 };
+
+export const fetchPosts = async (filters?: Record<string, any>): Promise<Post[]> => {
+    const response: AxiosResponse<Post[]> = await api.get('/posts', { params: filters });
+    return response.data;
+};
