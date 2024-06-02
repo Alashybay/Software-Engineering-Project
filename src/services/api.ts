@@ -9,3 +9,16 @@ export const fetchUsers = async (filters?: Record<string, any>): Promise<User[]>
     const response: AxiosResponse<User[]> = await api.get('/users', { params: filters });
     return response.data;
 };
+
+export const deleteUser = async (userId: number): Promise<Record<string, any>> => {
+    if (!userId) {
+        throw new Error("User ID is required");
+    }
+
+    try {
+        const response: AxiosResponse<Record<string, any>> = await api.delete(`/users/${userId}`);
+        return response.data;
+    } catch (error:any) {
+        throw new Error(`Failed to delete user: ${error.message}`);
+    }
+};

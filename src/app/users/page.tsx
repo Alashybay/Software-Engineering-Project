@@ -1,7 +1,9 @@
 "use client";
 
 import { Layout } from "@/src/components/Layout";
+import { useDeleteUser } from "@/src/hooks/useDeleteUser";
 import { useFetchUsers } from "@/src/hooks/useGetUsers";
+import { User } from "@/src/typings/user";
 import {
   Avatar,
   Badge,
@@ -16,6 +18,7 @@ import {
   Skeleton,
 } from "@mantine/core";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
+import { useCallback } from "react";
 
 const rolesData = ["Guest", "Admin"];
 
@@ -36,6 +39,15 @@ const roleColors: Record<string, string> = {
 
 export default function Page() {
   const { data: users, isLoading, error } = useFetchUsers();
+  const deleteUserMutation = useDeleteUser();
+
+  const handleDelete = useCallback(
+    (userId: number) => {
+      deleteUserMutation.mutate(userId);
+      console.log("deleted");
+    },
+    [deleteUserMutation]
+  );
 
   if (isLoading) {
     return (
@@ -89,14 +101,17 @@ export default function Page() {
             </ActionIcon>
           </Tooltip>
 
-          <Tooltip label="Delete user" position="bottom" withArrow>
-            <ActionIcon variant="subtle" color="red">
-              <IconTrash
-                style={{ width: rem(16), height: rem(16) }}
-                stroke={1.5}
-              />
-            </ActionIcon>
-          </Tooltip>
+          {!item.is_admin && (
+            <Tooltip label="Delete user" position="bottom" withArrow>
+              <ActionIcon variant="subtle" color="red">
+                <IconTrash
+                  style={{ width: rem(16), height: rem(16) }}
+                  stroke={1.5}
+                  onClick={() => handleDelete(item.id)}
+                />
+              </ActionIcon>
+            </Tooltip>
+          )}
         </Group>
       </Table.Td>
     </Table.Tr>
