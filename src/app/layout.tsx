@@ -3,6 +3,7 @@ import "@mantine/charts/styles.css";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { ProvidersWrapper } from "../providers";
+import { ModalsProvider } from '@mantine/modals';
 
 export const metadata = {
   title: "My project",
@@ -22,8 +23,10 @@ export default function RootLayout({
       <body>
         <ProvidersWrapper>
           <MantineProvider>
-            <Notifications />
-            {children}
+            <ModalsProvider>
+              <Notifications />
+              {children}
+            </ModalsProvider>
           </MantineProvider>
         </ProvidersWrapper>
       </body>
