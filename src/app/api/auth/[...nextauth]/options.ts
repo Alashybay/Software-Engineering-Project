@@ -1,6 +1,6 @@
-import axios from 'axios';
-import type { NextAuthOptions } from 'next-auth'
-import CredentialsProvider from 'next-auth/providers/credentials'
+import { login } from '@/src/lib/auth';
+import type { NextAuthOptions } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
 export const options: NextAuthOptions = {
     providers: [
@@ -18,30 +18,24 @@ export const options: NextAuthOptions = {
                     placeholder: "password"
                 }
             },
-            async authorize(credentials?: {email: string, password:string}) {
-                if(!credentials) return null
-                console.log(credentials);
-
+            async authorize(credentials) {
+                if (!credentials) return null;
                 try {
-                    // Make API call to authenticate user
-                    const response = await axios.post('/api/auth/signin', {
-                        email: credentials.email,
-                        password: credentials.password
-                    });
-
-                    // If authentication successful, return user data
-                    return response.data.user;
-                } catch (error) {
-                    // If authentication fails, return null
-                    console.error("Authentication error:", error);
+                    const user = await login(
+                        credentials.email,
+                        credentials.password
+                    );
+                    return user;
+                } catch (e) {
+                    console.error(e);
                     return null;
                 }
             }
         })
     ],
-    secret: process.env.NEXTAUTH_SECRET,
-    // pages:{
-    //     // signIn: '/signIn',
-    //     // newUser: '/signUp'
-    // }
-}
+    secret: 'K+Aj61Fp4lPLr85Au4urQgexIwygXvu+d1urkNYw0f4=',
+    pages: {
+        signIn: '/signIn',
+        // newUser: '/signUp'
+    }
+};

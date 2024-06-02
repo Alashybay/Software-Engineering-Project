@@ -12,16 +12,10 @@ import {
 } from "@mantine/core";
 import classes from "../../../styles/Login.module.css";
 import { useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { LoginForm } from "./loginForm";
 
 export function Login() {
-  const router = useRouter();
-
-  const handleClick = useCallback(() => {
-    router.push("/forgotPassword");
-    console.log("redirected to forgotPassword page");
-  }, [router]);
-
   return (
     <Container size={420} my={40}>
       <Title ta="center" className={classes.title}>
@@ -29,31 +23,13 @@ export function Login() {
       </Title>
       <Text c="dimmed" size="sm" ta="center" mt={5}>
         Do not have an account yet?{" "}
-        <Anchor
-          size="sm"
-          href="/signUp"
-        >
+        <Anchor size="sm" href="/signUp">
           Create account
         </Anchor>
       </Text>
 
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <TextInput label="Email" placeholder="you@mantine.dev" required />
-        <PasswordInput
-          label="Password"
-          placeholder="Your password"
-          required
-          mt="md"
-        />
-        <Group justify="space-between" mt="lg">
-          <Checkbox label="Remember me" />
-          <Anchor component="button" size="sm" onClick={handleClick}>
-            Forgot password?
-          </Anchor>
-        </Group>
-        <Button fullWidth mt="xl">
-          Sign in
-        </Button>
+        <LoginForm />
       </Paper>
     </Container>
   );
