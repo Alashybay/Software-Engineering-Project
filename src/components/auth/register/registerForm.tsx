@@ -1,7 +1,11 @@
 import { Stack, TextInput, PasswordInput, Checkbox } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { useRef } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export function RegisterForm() {
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+
   const form = useForm({
     initialValues: {
       name: "",
@@ -18,6 +22,17 @@ export function RegisterForm() {
           : null,
     },
   });
+
+  const handleRecaptcha = async () => {
+    const token = recaptchaRef.current?.getValue();
+    if (!token) {
+      alert("Please complete the recaptcha");
+    }
+    else {
+      alert("Recaptcha completed successfully");
+    }
+  };
+ 
 
   return (
     <Stack>
@@ -63,6 +78,11 @@ export function RegisterForm() {
         onChange={(event) =>
           form.setFieldValue("terms", event.currentTarget.checked)
         }
+      />
+      <ReCAPTCHA
+        ref={recaptchaRef}
+        sitekey={"6LecIu8pAAAAAA_PycEY_c4y8ZoWKVtyFkrmB6Z1"}
+        onChange={handleRecaptcha}
       />
     </Stack>
   );

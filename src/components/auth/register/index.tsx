@@ -23,6 +23,7 @@ export function Register(props: PaperProps) {
 
   const handleSubmit = useCallback(() => {
     console.log(form.getDirty());
+    handleModal();
   }, [form]);
 
   const handleSignUp = useCallback(() => {
@@ -92,7 +93,7 @@ export function Register(props: PaperProps) {
           >
             Already have an account? Login
           </Anchor>
-          <Button type="submit" radius="xl" onClick={handleModal}>
+          <Button type="submit" radius="xl" onClick={handleSubmit}>
             Register
           </Button>
         </Group>
