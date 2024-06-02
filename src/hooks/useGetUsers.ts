@@ -3,6 +3,8 @@ import { fetchUsers } from '../services/api';
 
 export const USERS_QUERY_KEY = 'users';
 
+//If filter is empty it fetches all users
+
 export const useFetchUsers = (filters = {}, options = {}) => {
   return useQuery({
     queryKey: [USERS_QUERY_KEY, filters],
@@ -13,5 +15,3 @@ export const useFetchUsers = (filters = {}, options = {}) => {
     ...options,
   });
 };
-
-//If filter is empty it fetches all users

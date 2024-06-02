@@ -1,3 +1,5 @@
+import { Category } from "./category";
+
 export type User ={
     id: number;
     firstname: string;
@@ -6,8 +8,8 @@ export type User ={
     email: string;
     password: string;
     phone: string | null;
-    is_admin: number;
-    preferences: string;
+    preferences: Category[];
     avatar?:string;
     role?: string;
+    is_admin?:boolean,
   }
