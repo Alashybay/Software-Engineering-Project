@@ -5,14 +5,15 @@ import { useDeletePost } from "@/src/hooks/deletePost";
 import { useFetchPosts } from "@/src/hooks/useGetPosts";
 import { useFetchUsers } from "@/src/hooks/useGetUsers";
 import {
-    Badge,
-    Button,
-    Group,
-    Image,
-    Paper,
-    Skeleton,
-    Stack,
-    Text, Title
+  Badge,
+  Button,
+  Group,
+  Image,
+  Paper,
+  Skeleton,
+  Stack,
+  Text,
+  Title,
 } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
@@ -30,14 +31,13 @@ export default function Page() {
   const { data: author } = useFetchUsers({ id: currentPost?.author_id });
   const handleDelete = useCallback(() => {
     deletePost.mutate(Number(post.postId));
-  }, []);
+  }, [deletePost, post.postId]);
 
-  const skeletons = [...Array(Math.floor(Math.random() * 5) + 1)].map(() => (
-    <Skeleton w="100%" height={100} />
-  ));
+  const skeletons = [...Array(Math.floor(Math.random() * 5) + 1)].map(
+    (index) => <Skeleton w="100%" height={100} key={index} />
+  );
 
   const authorName = author?.[0]?.firstname || "Unknown";
-
 
   return (
     <Layout>
@@ -61,7 +61,7 @@ export default function Page() {
             <Text>Author: {authorName} </Text>
             <Group justify="right">
               <Button>Share</Button>
-              {  session.data?.user?.id === currentPost?.author_id && (
+              {session.data?.user?.id === currentPost?.author_id && (
                 <Button onClick={handleDelete} color="red">
                   Delete
                 </Button>

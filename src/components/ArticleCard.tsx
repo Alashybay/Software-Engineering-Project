@@ -14,6 +14,7 @@ import {
 import classes from "../styles/ArticleCard.module.css";
 import { useRouter } from "next/navigation";
 import { useFetchUsers } from "../hooks/useGetUsers";
+import { Post } from "../typings/post";
 
 const linkProps = {
   href: "https://mantine.dev",
@@ -36,13 +37,13 @@ export default function ArticleCard(props: { post: Post }) {
       onClick={() => router.push(`/posts/${post.id}`)}
     >
       <Card.Section>
-          <Image src="https://i.pinimg.com/564x/38/6b/de/386bde5f86885e4b0fd60727d4bc5c5c.jpg" height={180} />
+        <Image
+          src="https://i.pinimg.com/564x/38/6b/de/386bde5f86885e4b0fd60727d4bc5c5c.jpg"
+          height={180}
+        />
       </Card.Section>
 
-      <Badge
-        className={classes.rating}
-        variant="gradient"
-      >
+      <Badge className={classes.rating} variant="gradient">
         {post.category}
       </Badge>
 
