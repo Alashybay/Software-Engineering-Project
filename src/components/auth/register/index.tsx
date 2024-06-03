@@ -9,7 +9,6 @@ import {
   Anchor,
   Stack,
   Title,
-  MultiSelect,
   NumberInput,
   TextInput,
   PasswordInput,
@@ -18,7 +17,6 @@ import {
 } from "@mantine/core";
 import { useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { modals } from "@mantine/modals";
 import { useCreateNewUser } from "@/src/hooks/createUser";
 import ReCAPTCHA from "react-google-recaptcha";
 import { User } from "@/src/typings/user";
@@ -37,8 +35,21 @@ export function Register(props: PaperProps) {
       is_admin: 0,
       preferences: "",
       age: 0,
-    }
-  })
+    },
+    validate: (values) => {
+      const errors: Record<string, string> = {};
+
+      if (!values.email.includes("@")) {
+        errors.email = "Invalid email";
+      }
+
+      if (values.password.length < 6) {
+        errors.password = "Password should include at least 6 characters";
+      }
+
+      return errors;
+    },
+  });
 
   const handleRecaptcha = async () => {
     const token = recaptchaRef.current?.getValue();
@@ -53,52 +64,6 @@ export function Register(props: PaperProps) {
     router.push("/signIn");
   }, [router]);
 
-  const handleModal = () => {
-    modals.open({
-      withCloseButton: false,
-      centered: true,
-      size: "lg",
-      children: (
-        <Stack>
-          <Title order={4} fw="normal" ta="center">
-            Help Us Personalize Your Experience
-          </Title>
-          <NumberInput
-            label="What's your age?"
-            description="Knowing your age helps us tailor our recommendations just for you!"
-            placeholder="Enter your age"
-            hideControls
-            {...form.getInputProps("age")}
-          />
-          <Select
-            label="Choose Your Favorite Food Categories"
-            description="Tell us what you love so we can recommend recipes you'll enjoy!"
-            placeholder="Select your favorite categories"
-            searchable
-            data={[
-              { value: "fast_food", label: "Fast Food" },
-              { value: "italian", label: "Italian" },
-              { value: "mexican", label: "Mexican" },
-              { value: "indian", label: "Indian" },
-              { value: "chinese", label: "Chinese" },
-              { value: "vegetarian", label: "Vegetarian" },
-              { value: "vegan", label: "Vegan" },
-              { value: "desserts", label: "Desserts" },
-              { value: "seafood", label: "Seafood" },
-              { value: "gluten_free", label: "Gluten Free" },
-              { value: "pizza", label: "Pizza" },
-            ]}
-            {...form.getInputProps("preferences")}
-          />
-          <Group justify="right">
-            <Button onClick={handleSubmit}>Save and Create Account</Button>
-          </Group>
-        </Stack>
-      ),
-    });
-  };
-
-
   const handleSubmit = useCallback(() => {
     const newUser: User = {
       firstname: form.values.firstname,
@@ -109,21 +74,15 @@ export function Register(props: PaperProps) {
       preferences: form.values.preferences,
       is_admin: 0,
     };
-    console.log("new user", newUser);
-    console.log("form", form.values)
-
     createNewUser.mutate({ newUserInfo: newUser });
-
+    router.push("/signIn");
   }, [form, createNewUser]);
 
   return (
-    <Paper radius="md" p="sm" withBorder {...props}>
+    <Paper radius="md" p="sm" withBorder {...props} mt="xl">
       <Text size="lg" fw={500} ta="center">
         Welcome to Food Recipes
       </Text>
-
-      <Divider label="Or continue with email" labelPosition="center" my="lg" />
-
       <form onSubmit={form.onSubmit(() => {})}>
         <Stack>
           <TextInput
@@ -170,18 +129,47 @@ export function Register(props: PaperProps) {
             }
             radius="md"
           />
-
+          <Divider label="Help Us Personalize Your Experience" />
+          <NumberInput
+            label="What's your age?"
+            description="Knowing your age helps us tailor our recommendations just for you!"
+            placeholder="Enter your age"
+            hideControls
+            {...form.getInputProps("age")}
+          />
+          <Select
+            label="Choose Your Favorite Food Categories"
+            description="Tell us what you love so we can recommend recipes you'll enjoy!"
+            placeholder="Select your favorite categories"
+            searchable
+            data={[
+              { value: "fast_food", label: "Fast Food" },
+              { value: "italian", label: "Italian" },
+              { value: "mexican", label: "Mexican" },
+              { value: "indian", label: "Indian" },
+              { value: "chinese", label: "Chinese" },
+              { value: "vegetarian", label: "Vegetarian" },
+              { value: "vegan", label: "Vegan" },
+              { value: "desserts", label: "Desserts" },
+              { value: "seafood", label: "Seafood" },
+              { value: "gluten_free", label: "Gluten Free" },
+              { value: "pizza", label: "Pizza" },
+            ]}
+            {...form.getInputProps("preferences")}
+          />
           <Checkbox
             label="I accept terms and conditions"
             onChange={(event) =>
               form.setFieldValue("terms", event.currentTarget.checked)
             }
           />
-          <ReCAPTCHA
-            ref={recaptchaRef}
-            sitekey={"6LecIu8pAAAAAA_PycEY_c4y8ZoWKVtyFkrmB6Z1"}
-            onChange={handleRecaptcha}
-          />
+          <Group justify="center">
+            <ReCAPTCHA
+              ref={recaptchaRef}
+              sitekey={"6LecIu8pAAAAAA_PycEY_c4y8ZoWKVtyFkrmB6Z1"}
+              onChange={handleRecaptcha}
+            />
+          </Group>
         </Stack>
         <Group justify="apart" mt="xl">
           <Anchor
@@ -193,8 +181,12 @@ export function Register(props: PaperProps) {
           >
             Already have an account? Login
           </Anchor>
-          <Button type="submit" radius="xl" onClick={handleModal}>
-            Register
+          <Button
+            onClick={handleSubmit}
+            type="submit"
+            disabled={!form.values.email || !form.values.password}
+          >
+            Save and Create Account
           </Button>
         </Group>
       </form>
