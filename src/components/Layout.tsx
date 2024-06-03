@@ -23,14 +23,19 @@ interface AppLayoutProps {
 }
 
 const routes = [
-  { title: "Dashboard", icon: <IconHome />, path: "/" },
+  // { title: "Dashboard", icon: <IconHome />, path: "/" },
   { title: "Posts", icon: <IconBooks />, path: "/posts" },
   { title: "Menu", icon: <IconMenu2 />, path: "/menu" },
+  // { title: "Users", icon: <IconUsersGroup />, path: "/users" },
+];
+const adminRoutes = [
+  { title: "Dashboard", icon: <IconHome />, path: "/" },
   { title: "Users", icon: <IconUsersGroup />, path: "/users" },
 ];
 
 export function Layout({ children }: AppLayoutProps): JSX.Element {
   const [opened, { toggle }] = useDisclosure();
+  const { data } = useSession();
 
   const router = useRouter();
   const navigation = usePathname();
@@ -39,6 +44,7 @@ export function Layout({ children }: AppLayoutProps): JSX.Element {
     alert("Logout, you sure about that?");
     nextAuthSignOut();
   };
+  const pages = data?.user.is_admin ? adminRoutes : routes;
 
   return (
     <AppShell
@@ -57,7 +63,7 @@ export function Layout({ children }: AppLayoutProps): JSX.Element {
         </Group>
       </AppShell.Header>
       <AppShell.Navbar p="md">
-        {routes.map((route, index) => (
+        {pages.map((route, index) => (
           <NavLink
             key={index}
             label={route.title}

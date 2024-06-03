@@ -1,10 +1,6 @@
 import axios from 'axios';
+import { User } from './authTypes';
 
-type User = {
-  id: string;
-  email: string;
-  password?: string;
-};
 
 type LoginFn = (email: string, password: string) => Promise<User | null>;
 
@@ -14,13 +10,13 @@ export const login: LoginFn = async (email, password) => {
       email: email,
       password: password,
     });
-    console.log(response.data.user);
-
-    return response.data.user;
-  } catch (error) {
-    console.log('some err');
-
-    console.error("Authentication error:", error);
-    return null;
+    const user = response.data.user;
+    return {
+      id: user.id,
+      email: user.email,
+      is_admin: user.is_admin,
+    };
+  } catch (error:any) {
+    throw new Error("Authentication error:", error)
   }
 };

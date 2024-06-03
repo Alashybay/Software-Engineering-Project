@@ -11,5 +11,5 @@ export type User ={
     preferences: Category[];
     avatar?:string;
     role?: string;
-    is_admin?:boolean,
+    is_admin?:number,
   }

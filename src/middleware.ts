@@ -1,18 +1,20 @@
-// Ref: https://next-auth.js.org/configuration/nextjs#advanced-usage
 import { withAuth, NextRequestWithAuth } from "next-auth/middleware"
+import { useSession } from "next-auth/react";
 import { NextResponse } from "next/server"
 
+const routes = [ "/posts" ,"/menu","/profile"];
+const adminRoutes = ["/","/users",];
+
 export default withAuth(
-    // `withAuth` augments your `Request` with the user's token.
     function middleware(request: NextRequestWithAuth) {
-        // console.log(request.nextUrl.pathname)
-        // console.log(request.nextauth.token)
+
 
         if (request.nextauth.token) {
-            // If user is authenticated, continue with the request
+            // If user is authenticated or accessing an unprotected route, continue with the request
+
             return NextResponse.next();
         } else {
-            // If user is not authenticated, redirect to login page
+            // If user is not authenticated and not accessing an unprotected route, redirect to login page
             return NextResponse.redirect("/signIn");
         }
     },
@@ -23,9 +25,7 @@ export default withAuth(
     }
 )
 
-// Applies next-auth only to matching routes - can be regex
-// Ref: https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
 export const config = {
-    matcher: ["/"],
+    matcher:['/'],
     denyUnauthenticated: true
 };

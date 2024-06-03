@@ -28,7 +28,6 @@ export function LoginForm() {
   }, [router]);
 
   const onSubmit = async (values: { email: string; password: string }) => {
-    setError("");
     const res = await signIn("credentials", {
       redirect: false,
       email: values.email,

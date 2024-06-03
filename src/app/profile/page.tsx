@@ -12,9 +12,6 @@ import {
 import { useSession } from "next-auth/react";
 
 export default function Page() {
-  const { data } = useSession();
-  console.log(data);
-
   //TODO add getUserData
   // TODO populate fields
 
