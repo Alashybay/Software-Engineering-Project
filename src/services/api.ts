@@ -6,7 +6,7 @@ const api = axios.create({
     baseURL: 'http://localhost:8081/api', // Base URL of your backend API
 });
 export const createUser= async (newUser: Partial<User>)=>{
-    const response: AxiosResponse<Record<string, any>> = await api.put(`/users`, newUser);
+    const response: AxiosResponse<Record<string, any>> = await api.post(`/users`, newUser);
     return response;
 
 }
