@@ -1,3 +1,4 @@
+import { Post } from "@/src/typings/post";
 import {
   TextInput,
   Textarea,
@@ -9,18 +10,37 @@ import {
   Group,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { useSession } from "next-auth/react";
+import { useCallback } from "react";
 
 export function PostForm() {
+  const { data } = useSession();
+
   const form = useForm({
     initialValues: {
       title: "",
       description: "",
       category: "",
+      author_id: 0,
     },
   });
 
+  const handleSubmit = useCallback(() => {
+    const values = form.getValues();
+    if (!data) {
+      return null;
+    }
+    const post: Post = {
+      title: values.title,
+      description: values.description,
+      category: values.category,
+      author_id: data?.user?.id,
+    };
+    console.log(post);
+  }, [form, data]);
+
   return (
-    <form onSubmit={form.onSubmit((values) => console.log(values))}>
+    <form>
       <Paper p="lg" shadow="md" radius="md" withBorder>
         <Stack>
           <Title order={4} ta="center">
@@ -58,7 +78,7 @@ export function PostForm() {
             {...form.getInputProps("category")}
           />
           <Group justify="right">
-            <Button color="blue" variant="gradient" type="submit">
+            <Button color="blue" variant="gradient" onClick={handleSubmit}>
               Create Recipe
             </Button>
           </Group>
