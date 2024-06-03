@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient, MutationFunction } from '@tanstack/react-query';
 import { createPost } from '../services/api';
 import { POSTS_QUERY_KEY } from '../constants/queryKeys';
+import { Post } from '../typings/post';
 
 interface CreatePostMutationVariables {
   newPostInfo: Partial<Post>;

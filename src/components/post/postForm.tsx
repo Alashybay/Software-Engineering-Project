@@ -1,4 +1,3 @@
-import { Post } from "@/src/typings/post";
 import {
   TextInput,
   Textarea,
@@ -11,10 +10,13 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useSession } from "next-auth/react";
-import { useCallback } from "react";
+import { use, useCallback } from "react";
+import { Post } from "../../typings/post";
+import { useCreateNewPost } from "@/src/hooks/createPost";
 
 export function PostForm() {
   const { data } = useSession();
+  const createPost = useCreateNewPost();
 
   const form = useForm({
     initialValues: {
@@ -34,9 +36,10 @@ export function PostForm() {
       title: values.title,
       description: values.description,
       category: values.category,
-      author_id: data?.user?.id,
+      author_id: Number(data?.user?.id),
     };
-    console.log(post);
+
+    createPost.mutate({ newPostInfo: post });
   }, [form, data]);
 
   return (

@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { User } from '../typings/user';
+import { Post } from '../typings/post';
 
 const api = axios.create({
     baseURL: 'http://localhost:8081/api', // Base URL of your backend API
@@ -10,10 +11,22 @@ export const createUser= async (newUser: Partial<User>)=>{
 
 }
 export const createPost= async (newPost: Partial<Post>)=>{
-    const response: AxiosResponse<Record<string, any>> = await api.put(`/posts`, newPost);
+    const response: AxiosResponse<Record<string, any>> = await api.post(`/posts/create`, newPost);
     return response;
-
 }
+
+export const deletePost = async (postId: number): Promise<Record<string, any>> => {
+    if (!postId) {
+        throw new Error("ID is required");
+    }
+
+    try {
+        const response: AxiosResponse<Record<string, any>> = await api.delete(`/posts/${postId}`);
+        return response.data;
+    } catch (error:any) {
+        throw new Error(`Failed to delete post: ${error.message}`);
+    }
+};
 
 export const fetchUsers = async (filters?: Record<string, any>): Promise<User[]> => {
     const response: AxiosResponse<User[]> = await api.get('/users', { params: filters });

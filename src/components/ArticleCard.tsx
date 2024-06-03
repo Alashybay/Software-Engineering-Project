@@ -36,17 +36,14 @@ export default function ArticleCard(props: { post: Post }) {
       onClick={() => router.push(`/posts/${post.id}`)}
     >
       <Card.Section>
-        <a {...linkProps}>
-          <Image src="https://i.imgur.com/Cij5vdL.png" height={180} />
-        </a>
+          <Image src="https://i.pinimg.com/564x/38/6b/de/386bde5f86885e4b0fd60727d4bc5c5c.jpg" height={180} />
       </Card.Section>
 
       <Badge
         className={classes.rating}
         variant="gradient"
-        gradient={{ from: "yellow", to: "red" }}
       >
-        outstanding
+        {post.category}
       </Badge>
 
       <Text className={classes.title} fw={500} component="a" {...linkProps}>
