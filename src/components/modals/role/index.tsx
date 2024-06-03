@@ -24,6 +24,7 @@ export function UserRoleModal(props: {
           userId: props.user?.id,
           updatedUserInfo: {
             role,
+            is_admin:role==='admin' ? 1: 0
           },
         });
         props.onClose();
