@@ -4,6 +4,11 @@ import { User } from '../typings/user';
 const api = axios.create({
     baseURL: 'http://localhost:8081/api', // Base URL of your backend API
 });
+export const createUser= async (newUser: Partial<User>)=>{
+    const response: AxiosResponse<Record<string, any>> = await api.put(`/users`, newUser);
+    return response;
+
+}
 
 export const fetchUsers = async (filters?: Record<string, any>): Promise<User[]> => {
     const response: AxiosResponse<User[]> = await api.get('/users', { params: filters });

@@ -16,10 +16,12 @@ import { RegisterForm } from "./registerForm";
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { modals } from "@mantine/modals";
+import { useCreateNewUser } from "@/src/hooks/createUser";
 
 export function Register(props: PaperProps) {
   const form = useForm();
   const router = useRouter();
+  const createNewUser = useCreateNewUser();
 
   const handleSubmit = useCallback(() => {
     console.log(form.getDirty());
@@ -29,6 +31,11 @@ export function Register(props: PaperProps) {
   const handleSignUp = useCallback(() => {
     router.push("/signIn");
   }, [router]);
+
+  // const handleSubmit = (event: React.FormEvent) => {
+  //   event.preventDefault();
+  //   createNewUser.mutate({ newUserInfo: { name, email } });
+  // };
 
   const handleModal = () => {
     modals.open({
