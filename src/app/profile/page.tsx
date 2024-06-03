@@ -13,6 +13,7 @@ import { useForm } from "@mantine/form";
 import { useSession } from "next-auth/react";
 
 export default function Page() {
+
   const { data } = useSession();
 
   const form = useForm({
