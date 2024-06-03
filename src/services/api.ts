@@ -9,6 +9,11 @@ export const createUser= async (newUser: Partial<User>)=>{
     return response;
 
 }
+export const createPost= async (newPost: Partial<Post>)=>{
+    const response: AxiosResponse<Record<string, any>> = await api.put(`/posts`, newPost);
+    return response;
+
+}
 
 export const fetchUsers = async (filters?: Record<string, any>): Promise<User[]> => {
     const response: AxiosResponse<User[]> = await api.get('/users', { params: filters });
