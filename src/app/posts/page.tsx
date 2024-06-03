@@ -3,36 +3,33 @@
 import ArticleCard from "@/src/components/ArticleCard";
 import { Layout } from "@/src/components/Layout";
 import { useFetchPosts } from "@/src/hooks/useGetPosts";
-import { Flex, SimpleGrid, Skeleton } from "@mantine/core";
+import {
+  Button, Group,
+  SimpleGrid,
+  Skeleton,
+  Stack
+} from "@mantine/core";
 
 export default function Page() {
   const { data, isLoading } = useFetchPosts();
-  if (isLoading) {
-    return (
-      <Layout>
-        <Flex direction="column" gap={10}>
-          {[...Array(3)].map((_, rowIndex) => (
-            <Flex key={rowIndex} gap={10}>
-              {[...Array(3)].map((_, colIndex) => (
-                <Skeleton
-                  key={`${rowIndex}-${colIndex}`}
-                  height={200}
-                  width="100%"
-                />
-              ))}
-            </Flex>
-          ))}
-        </Flex>
-      </Layout>
-    );
-  }
+
+  const cards = data?.map((post) => <ArticleCard key={post.id} post={post} />);
+  const skeletons = [...Array(Math.floor(Math.random() * 5) + 1)].map(() => (
+    <Skeleton w="100%" height={100} />
+  ));
+
   return (
     <Layout>
-      <SimpleGrid cols={{ md: 3, sm: 2 }} spacing="lg">
-        {data?.map((post) => (
-          <ArticleCard key={post.id} post={post} />
-        ))}
-      </SimpleGrid>
+      <Stack>
+        <Group justify="right">
+          <Button component="a" href="/posts/create" color="blue">
+            Create new post
+          </Button>
+        </Group>
+        <SimpleGrid cols={{ md: 3, sm: 2 }} spacing="lg">
+          {isLoading ? skeletons : cards}
+        </SimpleGrid>
+      </Stack>
     </Layout>
   );
 }
