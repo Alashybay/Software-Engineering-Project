@@ -1,3 +1,4 @@
+import { hashString } from "@/src/utils/hashString";
 import {
   TextInput,
   PasswordInput,
@@ -31,7 +32,7 @@ export function LoginForm() {
     const res = await signIn("credentials", {
       redirect: false,
       email: values.email,
-      password: values.password,
+      password: hashString(values.password),
     });
 
     if (res?.error) {

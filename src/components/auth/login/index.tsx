@@ -1,18 +1,11 @@
 import {
-  TextInput,
-  PasswordInput,
-  Checkbox,
   Anchor,
   Paper,
   Title,
   Text,
-  Container,
-  Group,
-  Button,
+  Container
 } from "@mantine/core";
 import classes from "../../../styles/Login.module.css";
-import { useCallback } from "react";
-import { signIn } from "next-auth/react";
 import { LoginForm } from "./loginForm";
 
 export function Login() {

@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import { useCreateNewUser } from "@/src/hooks/createUser";
 import ReCAPTCHA from "react-google-recaptcha";
 import { User } from "@/src/typings/user";
+import { hashString } from "@/src/utils/hashString";
 
 export function Register(props: PaperProps) {
   const router = useRouter();
@@ -69,7 +70,7 @@ export function Register(props: PaperProps) {
       firstname: form.values.firstname,
       surname: form.values.surname,
       email: form.values.email,
-      password: form.values.password,
+      password: hashString(form.values.password),
       age: form.values.age,
       preferences: form.values.preferences,
       is_admin: 0,
