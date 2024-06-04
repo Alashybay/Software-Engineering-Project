@@ -29,6 +29,17 @@ export default function ArticleCard(props: { post: Post }) {
 
   const { data: userData } = useFetchUsers({ id: post.author_id });
 
+  const handleCopyClick = (event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevent the card's onClick from triggering
+    navigator.clipboard.writeText(window.location.origin + `/posts/${post.id}`)
+      .then(() => {
+        console.log('Copied to clipboard');
+      })
+      .catch((err) => {
+        console.error('Failed to copy: ', err);
+      });
+  };
+
   return (
     <Card
       withBorder
@@ -69,23 +80,11 @@ export default function ArticleCard(props: { post: Post }) {
         </Center>
 
         <Group gap={8} mr={0}>
-          <ActionIcon className={classes.action} variant="subtle" color="red">
-            <IconHeart
-              style={{ width: rem(16), height: rem(16) }}
-              color={theme.colors.red[6]}
-            />
-          </ActionIcon>
           <ActionIcon
             className={classes.action}
             variant="subtle"
-            color="yellow"
+            onClick={handleCopyClick}
           >
-            <IconBookmark
-              style={{ width: rem(16), height: rem(16) }}
-              color={theme.colors.yellow[7]}
-            />
-          </ActionIcon>
-          <ActionIcon className={classes.action} variant="subtle">
             <IconShare
               style={{ width: rem(16), height: rem(16) }}
               color={theme.colors.blue[6]}
