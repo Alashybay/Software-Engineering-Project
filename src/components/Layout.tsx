@@ -11,6 +11,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   IconBooks,
   IconDoorExit,
+  IconHeart,
   IconHome,
   IconMenu2,
   IconUsersGroup,
@@ -23,14 +24,11 @@ interface AppLayoutProps {
 }
 
 const routes = [
-  // { title: "Dashboard", icon: <IconHome />, path: "/" },
-  { title: "Posts", icon: <IconBooks />, path: "/posts" },
-  { title: "Menu", icon: <IconMenu2 />, path: "/menu" },
-  // { title: "Users", icon: <IconUsersGroup />, path: "/users" },
-];
-const adminRoutes = [
-  { title: "Dashboard", icon: <IconHome />, path: "/" },
-  { title: "Users", icon: <IconUsersGroup />, path: "/users" },
+  { title: "Dashboard", icon: <IconHome />, path: "/", show: false },
+  { title: "Posts", icon: <IconBooks />, path: "/posts", show: true },
+  { title: "Favorites", icon: <IconHeart />, path: "/favorites", show: true },
+  { title: "Menu", icon: <IconMenu2 />, path: "/menu", show: true },
+  { title: "Users", icon: <IconUsersGroup />, path: "/users", show: false },
 ];
 
 export function Layout({ children }: AppLayoutProps): JSX.Element {
@@ -44,7 +42,10 @@ export function Layout({ children }: AppLayoutProps): JSX.Element {
     alert("Logout, you sure about that?");
     nextAuthSignOut();
   };
-  const pages = data?.user.is_admin ? adminRoutes : routes;
+
+  const is_admin = data?.user.is_admin;
+
+  const filteredRoutes = routes.filter(route => route.show === true || (route.show === false && is_admin));
 
   return (
     <AppShell
@@ -63,7 +64,7 @@ export function Layout({ children }: AppLayoutProps): JSX.Element {
         </Group>
       </AppShell.Header>
       <AppShell.Navbar p="md">
-        {pages.map((route, index) => (
+        {filteredRoutes.map((route, index) => (
           <NavLink
             key={index}
             label={route.title}

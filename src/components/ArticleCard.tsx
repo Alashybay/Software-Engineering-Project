@@ -90,6 +90,12 @@ export default function ArticleCard(props: { post: Post }) {
               color={theme.colors.blue[6]}
             />
           </ActionIcon>
+          <ActionIcon variant="subtle">
+            <IconHeart
+              style={{ width: rem(16), height: rem(16) }}
+              color={theme.colors.red[6]}
+            />
+          </ActionIcon>
         </Group>
       </Group>
     </Card>
