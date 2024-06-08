@@ -38,7 +38,7 @@ export function LoginForm() {
     if (res?.error) {
       setError("Invalid email or password");
     } else {
-      router.push("/"); // Redirect to homepage or dashboard after successful login
+      router.push("/posts"); 
     }
   };
 
