@@ -21,6 +21,7 @@ import { useCreateNewUser } from "@/src/hooks/createUser";
 import ReCAPTCHA from "react-google-recaptcha";
 import { User } from "@/src/typings/user";
 import { hashString } from "@/src/utils/hashString";
+import { notifications } from "@mantine/notifications";
 
 export function Register(props: PaperProps) {
   const router = useRouter();
