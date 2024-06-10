@@ -41,11 +41,14 @@ export function Layout({ children }: AppLayoutProps): JSX.Element {
   const handleLogout = () => {
     alert("Logout, you sure about that?");
     nextAuthSignOut();
+    router.push("/signIn");
   };
 
   const is_admin = data?.user.is_admin;
 
-  const filteredRoutes = routes.filter(route => route.show === true || (route.show === false && is_admin));
+  const filteredRoutes = routes.filter(
+    (route) => route.show === true || (route.show === false && is_admin)
+  );
 
   return (
     <AppShell
@@ -60,7 +63,7 @@ export function Layout({ children }: AppLayoutProps): JSX.Element {
       <AppShell.Header>
         <Group h="100%" px="md">
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <Title order={3}>Logo</Title>
+          <Title order={3}>FoodHub</Title>
         </Group>
       </AppShell.Header>
       <AppShell.Navbar p="md">
