@@ -1,20 +1,12 @@
 import { hashString } from "@/src/utils/hashString";
-import {
-  TextInput,
-  PasswordInput,
-  Group,
-  Checkbox,
-  Anchor,
-  Button,
-} from "@mantine/core";
+import { TextInput, PasswordInput, Anchor, Button, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { notifications } from "@mantine/notifications";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
 
 export function LoginForm() {
   const router = useRouter();
-  const [error, setError] = useState("");
 
   const form = useForm({
     initialValues: {
@@ -22,11 +14,6 @@ export function LoginForm() {
       password: "",
     },
   });
-
-  const handleClick = useCallback(() => {
-    router.push("/forgotPassword");
-    console.log("redirected to forgotPassword page");
-  }, [router]);
 
   const onSubmit = async (values: { email: string; password: string }) => {
     const res = await signIn("credentials", {
@@ -36,15 +23,24 @@ export function LoginForm() {
     });
 
     if (res?.error) {
-      setError("Invalid email or password");
+      notifications.show({
+        title: "Error",
+        message: res.error,
+        color: "red",
+      });
     } else {
-      router.push("/posts"); 
+      notifications.show({
+        title: "Success",
+        message: "You have successfully signed in",
+        color: "green",
+      });
+      router.push("/posts");
     }
   };
 
   return (
-    <>
-      <form onSubmit={form.onSubmit(onSubmit)}>
+    <form onSubmit={form.onSubmit(onSubmit)}>
+      <Stack gap="xs">
         <TextInput
           label="Email"
           placeholder="you@mantine.dev"
@@ -56,21 +52,18 @@ export function LoginForm() {
           placeholder="Your password"
           {...form.getInputProps("password")}
           required
-          mt="md"
         />
-        <Group justify="space-between" mt="lg">
-          <Checkbox label="Remember me" />
-          <Anchor component="button" size="sm" onClick={handleClick}>
-            Forgot password?
-          </Anchor>
-        </Group>
-        {error && (
-          <div style={{ color: "red", marginTop: "10px" }}>{error}</div>
-        )}
-        <Button fullWidth mt="xl" type="submit">
+        <Button fullWidth type="submit">
           Sign in
         </Button>
-      </form>
-    </>
+        <Anchor
+          component="button"
+          size="sm"
+          onClick={() => router.push("/forgotPassword")}
+        >
+          Forgot password?
+        </Anchor>
+      </Stack>
+    </form>
   );
 }
