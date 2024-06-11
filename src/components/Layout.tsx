@@ -39,9 +39,11 @@ export function Layout({ children }: AppLayoutProps): JSX.Element {
   const navigation = usePathname();
 
   const handleLogout = () => {
-    nextAuthSignOut(); 
-    alert("Logout, you sure about that?");
-    router.push("/");
+    nextAuthSignOut(
+      {
+        callbackUrl: "/",
+      }
+    ); 
   };
 
   const is_admin = data?.user.is_admin;
