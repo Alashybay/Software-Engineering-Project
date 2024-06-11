@@ -13,8 +13,22 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
 
 export default function Page() {
+
+  const handleSubmit = () => {
+    const date = new Date();
+    const nextMonthDate = new Date(date.setMonth(date.getMonth() + 1));
+    const month = nextMonthDate.toLocaleString("default", { month: "long" });
+
+    notifications.show({
+      title: "Subscription successful!",
+      message: `You have successfully subscribed to our service. ${nextMonthDate.getFullYear()}-${month}-${nextMonthDate.getDate()} is your next billing date.`,
+      color: "teal",
+    })
+  }
+
   return (
     <Layout>
       <Stack>
@@ -72,7 +86,7 @@ export default function Page() {
           </Stack>
         </Paper>
         <Group justify="right" mt="md">
-          <Button>Save and Subscribe</Button>
+          <Button type="submit" onClick={handleSubmit}>Save and Subscribe</Button>
         </Group>
       </Stack>
     </Layout>
