@@ -15,7 +15,6 @@ export function UserRoleModal(props: {
     }
   }, []);
   const updateUserMutation = useUpdateUser();
-  console.log(role);
 
   const handleUpdateUser = async () => {
     if (props.user?.id)
@@ -44,7 +43,7 @@ export function UserRoleModal(props: {
         <Select
           label={`Select role for ${props.user?.firstname} ${props.user?.surname}`}
           placeholder="Pick role"
-          data={["admin", "manager", "client"]}
+          data={["admin", "guest"]}
           value={role ?? props.user?.role}
           searchable
           onChange={handleRoleChange}

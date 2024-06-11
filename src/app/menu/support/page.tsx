@@ -13,6 +13,7 @@ import {
   Divider,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { YMaps } from "@pbe/react-yandex-maps";
 
 export default function Page() {
   const form = useForm({
@@ -33,6 +34,23 @@ export default function Page() {
     <Layout>
       <Stack gap="md">
         <FaqSimple />
+        <Title
+            order={2}
+            size="h1"
+            style={{ fontFamily: "Greycliff CF, var(--mantine-font-family)" }}
+            fw={900}
+            ta="center"
+          >
+            Find us on the map
+          </Title>
+        <YMaps>
+          <iframe
+            src="https://yandex.ru/map-widget/v1/-/CCQ~uJyj"
+            width="100%"
+            height="400"
+            title="map"
+          />
+        </YMaps>
         <Divider variant="dashed"/>
         <form onSubmit={form.onSubmit(() => {})}>
           <Title

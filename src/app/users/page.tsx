@@ -18,12 +18,13 @@ import {
   Skeleton,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { closeAllModals, modals } from "@mantine/modals";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { useCallback, useState } from "react";
 
 const roleColors: Record<string, string> = {
   guest: "blue",
-  admin: "green",
+  admin: "purple",
 };
 
 export default function Page() {
@@ -39,12 +40,16 @@ export default function Page() {
     },
     [open]
   );
-  const handleDelete = useCallback(
-    (userId: number) => {
-      deleteUserMutation.mutate(userId);
-    },
-    [deleteUserMutation]
-  );
+
+  const handleDelete = (user: Partial<User>) => {
+    modals.openConfirmModal({
+      title: "Delete user",
+      children: `Are you sure you want to delete ${user.firstname}?`,
+      labels: { confirm: "Confirm", cancel: "Cancel" },
+      onCancel: () => closeAllModals(),
+      onConfirm: () => deleteUserMutation.mutate(user.id),
+    });
+  };
 
   if (isLoading) {
     return (
@@ -58,14 +63,7 @@ export default function Page() {
     <Table.Tr key={item?.firstname}>
       <Table.Td>
         <Group gap="sm">
-          <Avatar
-            size={30}
-            src={
-              item?.avatar ??
-              "https://variety.com/wp-content/uploads/2021/04/Avatar.jpg?w=800&h=533&crop=1"
-            }
-            radius={30}
-          />
+          <Avatar size={30} src={""} radius={30} />
           <Text fz="sm" fw={500}>
             {item?.firstname}
           </Text>
@@ -73,8 +71,11 @@ export default function Page() {
       </Table.Td>
 
       <Table.Td>
-        <Badge color={roleColors[item?.role ?? "user"]} variant="light">
-          {item?.role}
+        <Badge
+          variant="filled"
+          color={roleColors[item?.is_admin === 1 ? "admin" : "guest"]}
+        >
+          {item?.is_admin === 1 ? "admin" : "guest"}
         </Badge>
       </Table.Td>
 
@@ -84,7 +85,7 @@ export default function Page() {
         </Anchor>
       </Table.Td>
       <Table.Td>
-        <Text fz="sm">{item?.phone}</Text>
+        <Text fz="sm">{item?.phone ?? <Text c="dimmed">not given</Text>}</Text>
       </Table.Td>
       <Table.Td>
         <Group gap={0} justify="flex-end">
@@ -104,7 +105,7 @@ export default function Page() {
                 <IconTrash
                   style={{ width: rem(16), height: rem(16) }}
                   stroke={1.5}
-                  onClick={() => handleDelete(item.id)}
+                  onClick={() => handleDelete(item)}
                 />
               </ActionIcon>
             </Tooltip>
