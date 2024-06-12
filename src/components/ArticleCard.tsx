@@ -28,12 +28,12 @@ const linkProps = {
   rel: "noopener noreferrer",
 };
 
-export default function ArticleCard(props: { post: Partial<Post> }) {
+export default function ArticleCard(props: { post?: Post }) {
   const theme = useMantineTheme();
   const router = useRouter();
   const [favorites, setFavorites] = useState<Post[]>([]);
   const [selected, setSelected] = useState<boolean>(false);
-  const post = props.post;
+  const post = props?.post;
 
   const { data: userData } = useFetchUsers({ id: post?.author_id });
 
@@ -42,9 +42,9 @@ export default function ArticleCard(props: { post: Partial<Post> }) {
     const currentFavorites: Post[] = favoriteList
       ? JSON.parse(favoriteList)
       : [];
-    setSelected(currentFavorites.some((fav: Post) => fav.id === post.id));
+    setSelected(currentFavorites.some((fav: Post) => fav.id === post?.id));
     setFavorites(currentFavorites);
-  }, [post.id]);
+  }, [post?.id]);
 
   const handleCopyClick = (event: React.MouseEvent) => {
     event.stopPropagation();
@@ -61,8 +61,8 @@ export default function ArticleCard(props: { post: Partial<Post> }) {
     (event: React.MouseEvent) => {
       event.stopPropagation();
       const updatedFavorites = selected
-        ? favorites.filter((fav: Post) => fav.id !== post.id)
-        : [post, ...favorites];
+        ? favorites?.filter((fav: Post) => fav.id !== post?.id)
+        : [post, ...favorites].filter((fav): fav is Post => fav !== undefined);
 
       setFavorites(updatedFavorites);
       localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
