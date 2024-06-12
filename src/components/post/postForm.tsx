@@ -7,10 +7,12 @@ import {
   Paper,
   Button,
   Group,
+  Rating,
+  Text,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useSession } from "next-auth/react";
-import { use, useCallback } from "react";
+import { useCallback } from "react";
 import { Post } from "../../typings/post";
 import { useCreateNewPost } from "@/src/hooks/createPost";
 
@@ -23,6 +25,7 @@ export function PostForm() {
       title: "",
       description: "",
       category: "",
+      rating: 0,
       author_id: 0,
     },
   });
@@ -80,6 +83,14 @@ export function PostForm() {
             ]}
             {...form.getInputProps("category")}
           />
+          <Group>
+            <Text fw="normal">Add your rating: </Text>
+            <Rating
+              value={form.values.rating}
+              onChange={(value) => form.setFieldValue("rating", value)}
+              size="lg"
+            />
+          </Group>
           <Group justify="right">
             <Button color="blue" variant="gradient" onClick={handleSubmit}>
               Create Recipe

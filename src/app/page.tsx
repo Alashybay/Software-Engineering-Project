@@ -21,10 +21,9 @@ import {
   userLocationData,
 } from "../mocks/statistics.mock";
 
-const PRIMARY_COL_HEIGHT = rem(300);
+
 
 export default function Page() {
-  const SECONDARY_COL_HEIGHT = `calc(${PRIMARY_COL_HEIGHT} / 2 - var(--mantine-spacing-md) / 2)`;
   return (
     <Layout>
       <>
@@ -37,10 +36,9 @@ export default function Page() {
 
         <Divider my="md" />
         <Container my="md">
-          <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
             <Paper h="auto" radius="md" p="md" withBorder>
               <LineChart
-                h={PRIMARY_COL_HEIGHT}
+                h={300}
                 data={userData}
                 withLegend
                 dataKey="month"
@@ -52,7 +50,7 @@ export default function Page() {
               <Grid.Col>
                 <Paper h="auto" radius="md" p="md" withBorder>
                   <BarChart
-                    h={SECONDARY_COL_HEIGHT}
+                    h={300}
                     data={deviceUsageData}
                     withLegend
                     dataKey="month"
@@ -68,7 +66,7 @@ export default function Page() {
               <Grid.Col span={6}>
                 <Paper h="auto" radius="md" p="md" withBorder>
                   <PieChart
-                    h={SECONDARY_COL_HEIGHT}
+                    h={300}
                     withLabelsLine
                     labelsPosition="inside"
                     labelsType="percent"
@@ -102,7 +100,7 @@ export default function Page() {
                 </Paper>
               </Grid.Col>
             </Grid>
-          </SimpleGrid>
+
         </Container>
       </>
     </Layout>

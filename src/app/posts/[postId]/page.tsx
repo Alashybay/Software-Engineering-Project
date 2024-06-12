@@ -6,6 +6,7 @@ import { useFetchPosts } from "@/src/hooks/useGetPosts";
 import { useFetchUsers } from "@/src/hooks/useGetUsers";
 import {
   Badge,
+  Box,
   Button,
   Card,
   Center,
@@ -13,6 +14,7 @@ import {
   Divider,
   Group,
   Image,
+  Rating,
   Skeleton,
   Stack,
   Text,
@@ -59,18 +61,22 @@ export default function Page() {
                 />
               </Card.Section>
               <Divider variant="dashed" />
-              <Group justify="right">
-                <Text fw="bold">Category:</Text>
-                <Badge size="md" className={classes.rating} color="lime">
-                  {currentPost?.category}
-                </Badge>
-              </Group>
-
               <Group>
                 <Text fw="bold">Title:</Text>
-                <Text className={classes.title} fw={500} component="a">
-                  {currentPost?.title}
-                </Text>
+                <Text className={classes.title}>{currentPost?.title}</Text>
+              </Group>
+              
+              <Group justify="space-between">
+                <Group>
+                  <Text fw="bold">Rating:</Text>
+                  <Rating value={rating} onChange={setRating} />
+                </Group>
+                <Group>
+                  <Text fw="bold">Category:</Text>
+                  <Badge size="md" className={classes.rating} color="lime">
+                    {currentPost?.category}
+                  </Badge>
+                </Group>
               </Group>
 
               <Group>

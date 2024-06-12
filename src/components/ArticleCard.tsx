@@ -17,7 +17,6 @@ import { useFetchUsers } from "../hooks/useGetUsers";
 import { Post } from "../typings/post";
 
 const linkProps = {
-  href: "https://mantine.dev",
   target: "_blank",
   rel: "noopener noreferrer",
 };
@@ -30,14 +29,20 @@ export default function ArticleCard(props: { post: Post }) {
   const { data: userData } = useFetchUsers({ id: post.author_id });
 
   const handleCopyClick = (event: React.MouseEvent) => {
-    event.stopPropagation(); // Prevent the card's onClick from triggering
-    navigator.clipboard.writeText(window.location.origin + `/posts/${post.id}`)
+    event.stopPropagation();
+    navigator.clipboard
+      .writeText(window.location.origin + `/posts/${post.id}`)
       .then(() => {
-        console.log('Copied to clipboard');
+        console.log("Copied to clipboard");
       })
       .catch((err) => {
-        console.error('Failed to copy: ', err);
+        console.error("Failed to copy: ", err);
       });
+  };
+
+  const handleAddToFavorites = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    console.log("Add to favorites");
   };
 
   return (
@@ -68,12 +73,7 @@ export default function ArticleCard(props: { post: Post }) {
 
       <Group justify="space-between" className={classes.footer}>
         <Center>
-          <Avatar
-            src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png"
-            size={24}
-            radius="xl"
-            mr="xs"
-          />
+          <Avatar src="" size={24} radius="xl" mr="xs" />
           <Text fz="sm" inline>
             {userData?.[0].firstname} {userData?.[0].surname}
           </Text>
@@ -94,6 +94,7 @@ export default function ArticleCard(props: { post: Post }) {
             <IconHeart
               style={{ width: rem(16), height: rem(16) }}
               color={theme.colors.red[6]}
+              onClick={handleAddToFavorites}
             />
           </ActionIcon>
         </Group>
