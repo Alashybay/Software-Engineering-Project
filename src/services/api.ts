@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { User } from '../typings/user';
+import { User, UserFetch } from '../typings/user';
 import { Post } from '../typings/post';
 
 const api = axios.create({
@@ -28,12 +28,12 @@ export const deletePost = async (postId: number): Promise<Record<string, any>> =
     }
 };
 
-export const fetchUsers = async (filters?: Record<string, any>): Promise<User[]> => {
-    const response: AxiosResponse<User[]> = await api.get('/users', { params: filters });
+export const fetchUsers = async (filters?: Record<string, any>): Promise<UserFetch[]> => {
+    const response: AxiosResponse<UserFetch[]> = await api.get('/users', { params: filters });
     return response.data;
 };
 
-export const deleteUser = async (userId: number): Promise<Record<string, any>> => {
+export const deleteUser = async (userId?: number): Promise<Record<string, any>> => {
     if (!userId) {
         throw new Error("User ID is required");
     }

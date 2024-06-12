@@ -57,7 +57,7 @@ export default function Page() {
                   />
                 }
               >
-                <ArticleCard post={dayRecipe ?? {}} />
+                <ArticleCard post={dayRecipe} />
               </Indicator>
             </Tooltip>
           </>

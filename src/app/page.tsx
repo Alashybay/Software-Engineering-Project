@@ -28,9 +28,8 @@ export default function Page() {
   const { data: fetchedUsers } = useFetchUsers();
   const { data: fetchedPosts } = useFetchPosts();
 
-
-  console.log('users', fetchedUsers)
-  console.log('posts', fetchedPosts)  
+  console.log("users", fetchedUsers);
+  console.log("posts", fetchedPosts);
 
   const userData = fetchedUsers?.map((user) => {
     return {
@@ -39,9 +38,13 @@ export default function Page() {
     };
   });
 
-  const averageAge = fetchedUsers && fetchedUsers.length > 0
-  ? (fetchedUsers.reduce((acc, user) => acc + user.age, 0) / fetchedUsers.length).toFixed(2)
-  : '0.00';
+  const averageAge =
+    fetchedUsers && fetchedUsers.length > 0
+      ? (
+          fetchedUsers.reduce((acc, user) => acc + user.age, 0) /
+          fetchedUsers.length
+        ).toFixed(2)
+      : "0.00";
 
   return (
     <Layout>
@@ -70,7 +73,7 @@ export default function Page() {
                 xAxisLabel="Age"
                 yAxisLabel="User"
                 withLegend
-                legendProps={{ verticalAlign: 'bottom', height: 20 }}
+                legendProps={{ verticalAlign: "bottom", height: 20 }}
               />
             </Paper>
             <Grid gutter="md">
