@@ -1,4 +1,9 @@
-import { IconBookmark, IconHeart, IconShare } from "@tabler/icons-react";
+import {
+  IconBookmark,
+  IconHeart,
+  IconHeartFilled,
+  IconShare,
+} from "@tabler/icons-react";
 import {
   Card,
   Image,
@@ -15,6 +20,8 @@ import classes from "../styles/ArticleCard.module.css";
 import { useRouter } from "next/navigation";
 import { useFetchUsers } from "../hooks/useGetUsers";
 import { Post } from "../typings/post";
+import { useCallback, useEffect, useState } from "react";
+import { notifications } from "@mantine/notifications";
 
 const linkProps = {
   target: "_blank",
@@ -23,10 +30,20 @@ const linkProps = {
 
 export default function ArticleCard(props: { post: Partial<Post> }) {
   const theme = useMantineTheme();
-  const router = useRouter();
+  const [favorites, setFavorites] = useState<Post[]>([]);
+  const [selected, setSelected] = useState<boolean>(false);
   const post = props.post;
 
   const { data: userData } = useFetchUsers({ id: post?.author_id });
+
+  useEffect(() => {
+    const favoriteList = localStorage.getItem("favorites");
+    const currentFavorites: Post[] = favoriteList
+      ? JSON.parse(favoriteList)
+      : [];
+    setSelected(currentFavorites.some((fav: Post) => fav.id === post.id));
+    setFavorites(currentFavorites);
+  }, [post.id]);
 
   const handleCopyClick = (event: React.MouseEvent) => {
     event.stopPropagation();
@@ -39,18 +56,37 @@ export default function ArticleCard(props: { post: Partial<Post> }) {
         console.error("Failed to copy: ", err);
       });
   };
+  const toggleFavorites = useCallback(
+    (event: React.MouseEvent) => {
+      event.stopPropagation();
+      const updatedFavorites = selected
+        ? favorites.filter((fav: Post) => fav.id !== post.id)
+        : [post, ...favorites];
 
-  const handleAddToFavorites = (event: React.MouseEvent) => {
-    event.stopPropagation();
-    console.log("Add to favorites");
-  };
+      setFavorites(updatedFavorites);
+      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+      setSelected(!selected);
+      !selected &&
+        notifications.show({
+          message: "The post added to Favorites",
+          color: "green",
+        });
+      selected &&
+        notifications.show({
+          message: "The post removed from Favorites",
+          color: "red",
+        });
+    },
+    [favorites, post, selected]
+  );
+  console.log(favorites);
 
   return (
     <Card
       withBorder
       radius="md"
       className={classes.card}
-      onClick={() => router.push(`/posts/${post?.id}`)}
+      // onClick={() => router.push(`/posts/${post.id}`)}
     >
       <Card.Section>
         <Image
@@ -99,12 +135,24 @@ export default function ArticleCard(props: { post: Partial<Post> }) {
               color={theme.colors.blue[6]}
             />
           </ActionIcon>
-          <ActionIcon variant="subtle">
-            <IconHeart
-              style={{ width: rem(16), height: rem(16) }}
-              color={theme.colors.red[6]}
-              onClick={handleAddToFavorites}
-            />
+          <ActionIcon variant="subtle" onClick={toggleFavorites}>
+            {selected ? (
+              <IconHeartFilled
+                style={{
+                  width: rem(16),
+                  height: rem(16),
+                }}
+                color={theme.colors.red[6]}
+              />
+            ) : (
+              <IconHeart
+                style={{
+                  width: rem(16),
+                  height: rem(16),
+                }}
+                color={theme.colors.red[6]}
+              />
+            )}
           </ActionIcon>
         </Group>
       </Group>
