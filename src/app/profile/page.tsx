@@ -1,6 +1,7 @@
 "use client";
 
 import { Layout } from "@/src/components/Layout";
+import { useFetchUsers } from "@/src/hooks/useGetUsers";
 import {
   Button,
   Group,
@@ -11,6 +12,7 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 export default function Page() {
 
@@ -26,11 +28,21 @@ export default function Page() {
       phone: "",
     },
   });
+  const { data: user } = useFetchUsers({ id: data?.user?.id });
 
-  //TODO add getUserData
-  // TODO populate fields
+  useEffect(() => {
+    if (user) {
+      form.setValues({
+        name: user[0].firstname,
+        surname: user[0].surname,
+        email: user[0].email,
+        password: user[0].password,
+        age: user[0].age,
+        phone: user[0].phone,
+      });
+    }
+  }, [user]);
   
-
   return (
     <Layout>
       <form onSubmit={form.onSubmit((values) => console.log(values))}>
