@@ -5,9 +5,13 @@ import { Layout } from "@/src/components/Layout";
 import { useFetchPosts } from "@/src/hooks/useGetPosts";
 import {
   Button,
-  Group, SimpleGrid,
+  Group,
+  Indicator,
+  SimpleGrid,
   Skeleton,
-  Stack, Tooltip
+  Stack,
+  Text,
+  Tooltip,
 } from "@mantine/core";
 import { ReactNode, useEffect, useMemo, useState } from "react";
 
@@ -38,8 +42,10 @@ export default function Page() {
         </Group>
         <SimpleGrid cols={{ md: 3, sm: 2 }} spacing="lg">
           <>
-            <Tooltip label="Recipe of the day!" opened withArrow>
-              <ArticleCard post={dayRecipe} />
+            <Tooltip label="Recipe of the day" opened withArrow >
+              <Indicator inline size={20} withBorder color="red" processing>
+                <ArticleCard post={dayRecipe} />
+              </Indicator>
             </Tooltip>
           </>
           {content}
