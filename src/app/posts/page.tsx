@@ -14,6 +14,15 @@ export default function Page() {
   const skeletons = [...Array(Math.floor(Math.random() * 5) + 1)].map(
     (index) => <Skeleton w="100%" height={100} key={index} />
   );
+
+  const dayRecipe = useMemo(() => {
+    if (data) return data[Math.floor(Math.random() * data?.length)];
+  }, [data]);
+
+  console.log(dayRecipe);
+
+  setTimeout(() => console.log("myGreeting"), 1000);
+
   useEffect(() => {
     if (isLoading) return setContent(skeletons);
     return setContent(cards);
