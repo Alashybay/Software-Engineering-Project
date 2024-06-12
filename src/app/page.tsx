@@ -87,7 +87,7 @@ export default function Page() {
                     series={[
                       { name: "Users", color: "violet.6" },
                       { name: "Posts", color: "blue.6" },
-                      { name: "Comments", color: "teal.6" },
+                      { name: "Rating", color: "teal.6" },
                     ]}
                     tickLine="y"
                   />
