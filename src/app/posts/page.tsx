@@ -7,12 +7,13 @@ import {
   Button,
   Group,
   Indicator,
+  rem,
   SimpleGrid,
   Skeleton,
   Stack,
-  Text,
   Tooltip,
 } from "@mantine/core";
+import { IconAlertCircle } from "@tabler/icons-react";
 import { ReactNode, useEffect, useMemo, useState } from "react";
 
 export default function Page() {
@@ -27,6 +28,7 @@ export default function Page() {
   const skeletons = [...Array(Math.floor(Math.random() * 5) + 1)].map(
     (index) => <Skeleton w="100%" height={100} key={index} />
   );
+
   useEffect(() => {
     if (isLoading) return setContent(skeletons);
     return setContent(cards);
@@ -42,8 +44,19 @@ export default function Page() {
         </Group>
         <SimpleGrid cols={{ md: 3, sm: 2 }} spacing="lg">
           <>
-            <Tooltip label="Recipe of the day" opened withArrow >
-              <Indicator inline size={20} withBorder color="red" processing>
+            <Tooltip label="Recipe of the day!" withArrow>
+              <Indicator
+                inline
+                size={30}
+                withBorder
+                color="orange"
+                processing
+                label={
+                  <IconAlertCircle
+                    style={{ width: rem(15), height: rem(15) }}
+                  />
+                }
+              >
                 <ArticleCard post={dayRecipe} />
               </Indicator>
             </Tooltip>

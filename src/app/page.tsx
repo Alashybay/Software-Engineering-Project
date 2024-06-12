@@ -8,22 +8,41 @@ import {
   Paper,
   rem,
   SimpleGrid,
+  Stack,
   Text,
   ThemeIcon,
   Title,
 } from "@mantine/core";
 import { Layout } from "../components/Layout";
-import { BarChart, LineChart, PieChart } from "@mantine/charts";
+import { BarChart, LineChart, PieChart, ScatterChart } from "@mantine/charts";
 import { IconCircleCheck } from "@tabler/icons-react";
 import {
   deviceUsageData,
   userData,
   userLocationData,
 } from "../mocks/statistics.mock";
-
-
+import { useFetchUsers } from "../hooks/useGetUsers";
+import { useFetchPosts } from "../hooks/useGetPosts";
 
 export default function Page() {
+  const { data: fetchedUsers } = useFetchUsers();
+  const { data: fetchedPosts } = useFetchPosts();
+
+
+  console.log('users', fetchedUsers)
+  console.log('posts', fetchedPosts)  
+
+  const userData = fetchedUsers?.map((user) => {
+    return {
+      userId: user.id,
+      age: user.age,
+    };
+  });
+
+  const averageAge = fetchedUsers && fetchedUsers.length > 0
+  ? (fetchedUsers.reduce((acc, user) => acc + user.age, 0) / fetchedUsers.length).toFixed(2)
+  : '0.00';
+
   return (
     <Layout>
       <>
@@ -36,14 +55,22 @@ export default function Page() {
 
         <Divider my="md" />
         <Container my="md">
+          <Stack>
             <Paper h="auto" radius="md" p="md" withBorder>
-              <LineChart
-                h={300}
-                data={userData}
+              <ScatterChart
+                h={350}
+                data={[
+                  {
+                    color: "violet.5",
+                    name: `Average User age: ${averageAge} | Total Users: ${fetchedUsers?.length}`,
+                    data: userData || [],
+                  },
+                ]}
+                dataKey={{ x: "age", y: "userId" }}
+                xAxisLabel="Age"
+                yAxisLabel="User"
                 withLegend
-                dataKey="month"
-                series={[{ name: "Users", color: "green" }]}
-                tickLine="y"
+                legendProps={{ verticalAlign: 'bottom', height: 20 }}
               />
             </Paper>
             <Grid gutter="md">
@@ -100,7 +127,7 @@ export default function Page() {
                 </Paper>
               </Grid.Col>
             </Grid>
-
+          </Stack>
         </Container>
       </>
     </Layout>

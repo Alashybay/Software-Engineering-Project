@@ -21,7 +21,6 @@ const linkProps = {
   rel: "noopener noreferrer",
 };
 
-
 export default function ArticleCard(props: { post: Partial<Post> }) {
   const theme = useMantineTheme();
   const router = useRouter();
@@ -55,12 +54,12 @@ export default function ArticleCard(props: { post: Partial<Post> }) {
     >
       <Card.Section>
         <Image
-          src="https://i.pinimg.com/564x/38/6b/de/386bde5f86885e4b0fd60727d4bc5c5c.jpg"
+          src="https://i.pinimg.com/564x/96/7e/56/967e5643272d8399272fbca413674762.jpg"
           height={180}
         />
       </Card.Section>
 
-      <Badge className={classes.rating} variant="gradient">
+      <Badge className={classes.rating} color="green">
         {post?.category}
       </Badge>
 
@@ -74,7 +73,16 @@ export default function ArticleCard(props: { post: Partial<Post> }) {
 
       <Group justify="space-between" className={classes.footer}>
         <Center>
-          <Avatar src="" size={24} radius="xl" mr="xs" />
+          <Avatar
+            src={
+              userData?.[0].is_admin === 1
+                ? "https://i.pinimg.com/474x/32/22/da/3222dab749294d6c13f969b4d0bed41c.jpg"
+                : "https://i.pinimg.com/474x/38/6b/de/386bde5f86885e4b0fd60727d4bc5c5c.jpg"
+            }
+            size={24}
+            radius="xl"
+            mr="xs"
+          />
           <Text fz="sm" inline>
             {userData?.[0].firstname} {userData?.[0].surname}
           </Text>

@@ -39,11 +39,9 @@ export function Layout({ children }: AppLayoutProps): JSX.Element {
   const navigation = usePathname();
 
   const handleLogout = () => {
-    nextAuthSignOut(
-      {
-        callbackUrl: "/",
-      }
-    ); 
+    nextAuthSignOut({
+      callbackUrl: "/",
+    });
   };
 
   const is_admin = data?.user.is_admin;
@@ -65,7 +63,13 @@ export function Layout({ children }: AppLayoutProps): JSX.Element {
       <AppShell.Header>
         <Group h="100%" px="md">
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <Title order={3}>FoodHub</Title>
+          <Title
+            order={3}
+            onClick={() => router.push("/posts")}
+            style={{ cursor: "pointer" }}
+          >
+            FoodHub
+          </Title>
         </Group>
       </AppShell.Header>
       <AppShell.Navbar p="md">
