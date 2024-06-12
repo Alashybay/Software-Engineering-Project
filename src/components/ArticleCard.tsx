@@ -21,17 +21,18 @@ const linkProps = {
   rel: "noopener noreferrer",
 };
 
-export default function ArticleCard(props: { post: Post }) {
+
+export default function ArticleCard(props: { post: Partial<Post> }) {
   const theme = useMantineTheme();
   const router = useRouter();
   const post = props.post;
 
-  const { data: userData } = useFetchUsers({ id: post.author_id });
+  const { data: userData } = useFetchUsers({ id: post?.author_id });
 
   const handleCopyClick = (event: React.MouseEvent) => {
     event.stopPropagation();
     navigator.clipboard
-      .writeText(window.location.origin + `/posts/${post.id}`)
+      .writeText(window.location.origin + `/posts/${post?.id}`)
       .then(() => {
         console.log("Copied to clipboard");
       })
@@ -50,7 +51,7 @@ export default function ArticleCard(props: { post: Post }) {
       withBorder
       radius="md"
       className={classes.card}
-      onClick={() => router.push(`/posts/${post.id}`)}
+      onClick={() => router.push(`/posts/${post?.id}`)}
     >
       <Card.Section>
         <Image
@@ -60,11 +61,11 @@ export default function ArticleCard(props: { post: Post }) {
       </Card.Section>
 
       <Badge className={classes.rating} variant="gradient">
-        {post.category}
+        {post?.category}
       </Badge>
 
       <Text className={classes.title} fw={500} component="a" {...linkProps}>
-        {post.title}
+        {post?.title}
       </Text>
 
       <Text fz="sm" c="dimmed" lineClamp={4}>
