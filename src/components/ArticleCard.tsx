@@ -80,7 +80,6 @@ export default function ArticleCard(props: { post?: Post }) {
     },
     [favorites, post, selected]
   );
-  console.log(favorites);
 
   return (
     <Card
