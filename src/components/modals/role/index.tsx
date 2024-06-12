@@ -22,7 +22,6 @@ export function UserRoleModal(props: {
         await updateUserMutation.mutateAsync({
           userId: props.user?.id,
           updatedUserInfo: {
-            role,
             is_admin: role === "admin" ? 1 : 0,
           },
         });

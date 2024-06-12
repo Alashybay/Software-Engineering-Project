@@ -63,7 +63,16 @@ export default function Page() {
     <Table.Tr key={item?.firstname}>
       <Table.Td>
         <Group gap="sm">
-          <Avatar size={30} src={""} radius={30} />
+          <Avatar
+            src={
+              item.is_admin === 1
+                ? "https://i.pinimg.com/474x/32/22/da/3222dab749294d6c13f969b4d0bed41c.jpg"
+                : "https://i.pinimg.com/474x/38/6b/de/386bde5f86885e4b0fd60727d4bc5c5c.jpg"
+            }
+            size={24}
+            radius="xl"
+            mr="xs"
+          />
           <Text fz="sm" fw={500}>
             {item?.firstname}
           </Text>

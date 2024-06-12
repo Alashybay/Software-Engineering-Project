@@ -5,6 +5,7 @@ import { useDeletePost } from "@/src/hooks/deletePost";
 import { useFetchPosts } from "@/src/hooks/useGetPosts";
 import { useFetchUsers } from "@/src/hooks/useGetUsers";
 import {
+  Avatar,
   Badge,
   Box,
   Button,
@@ -20,11 +21,13 @@ import {
   Text,
 } from "@mantine/core";
 import { useSession } from "next-auth/react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import classes from "../../../styles/ActionsGrid.module.css";
+import { notifications } from "@mantine/notifications";
 
 export default function Page() {
+  const route = useRouter();
   const post = useParams();
   const deletePost = useDeletePost();
   const session = useSession();
@@ -36,6 +39,12 @@ export default function Page() {
   const { data: author } = useFetchUsers({ id: currentPost?.author_id });
   const handleDelete = useCallback(() => {
     deletePost.mutate(Number(post.postId));
+    route.push("/posts");
+    notifications.show({
+      title: "Post deleted",
+      message: "Post has been successfully deleted",
+      color: "green",
+    })
   }, [deletePost, post.postId]);
 
   const skeletons = [...Array(Math.floor(Math.random() * 5) + 1)].map(
@@ -55,7 +64,7 @@ export default function Page() {
             <Stack>
               <Card.Section>
                 <Image
-                  src="https://i.pinimg.com/564x/38/6b/de/386bde5f86885e4b0fd60727d4bc5c5c.jpg"
+                  src="https://i.pinimg.com/564x/96/7e/56/967e5643272d8399272fbca413674762.jpg"
                   height={180}
                   fit="contain"
                 />
@@ -65,7 +74,7 @@ export default function Page() {
                 <Text fw="bold">Title:</Text>
                 <Text className={classes.title}>{currentPost?.title}</Text>
               </Group>
-              
+
               <Group justify="space-between">
                 <Group>
                   <Text fw="bold">Rating:</Text>
@@ -79,21 +88,32 @@ export default function Page() {
                 </Group>
               </Group>
 
-              <Group>
-                <Text fw="bold">Description:</Text>
-                <Text fz="sm" lineClamp={4}>
+              <Text fw="bold">
+                Description:
+                <Text fz="sm" span lineClamp={4} maw={800}>
                   {currentPost?.description}
                 </Text>
-              </Group>
+              </Text>
 
               <Group justify="space-between" className={classes.footer}>
                 <Center>
                   <Group>
                     <Text fw="bold">Author:</Text>
-                    <Text fz="sm" inline>
-                      {authorName}
-                    </Text>
+                    <Text fz="sm" inline></Text>
                   </Group>
+                  <Avatar
+                    src={
+                      author?.[0].is_admin === 1
+                        ? "https://i.pinimg.com/474x/32/22/da/3222dab749294d6c13f969b4d0bed41c.jpg"
+                        : "https://i.pinimg.com/474x/38/6b/de/386bde5f86885e4b0fd60727d4bc5c5c.jpg"
+                    }
+                    size={24}
+                    radius="xl"
+                    mr="xs"
+                  />
+                  <Text fz="sm" inline>
+                    {authorName}
+                  </Text>
                 </Center>
 
                 <Group justify="right">

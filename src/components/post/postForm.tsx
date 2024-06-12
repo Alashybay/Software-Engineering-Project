@@ -15,10 +15,13 @@ import { useSession } from "next-auth/react";
 import { useCallback } from "react";
 import { Post } from "../../typings/post";
 import { useCreateNewPost } from "@/src/hooks/createPost";
+import { useRouter } from "next/navigation";
+import { notifications } from "@mantine/notifications";
 
 export function PostForm() {
   const { data } = useSession();
   const createPost = useCreateNewPost();
+  const router = useRouter();
 
   const form = useForm({
     initialValues: {
@@ -43,6 +46,12 @@ export function PostForm() {
     };
 
     createPost.mutate({ newPostInfo: post });
+    router.push("/posts");
+    notifications.show({
+      title: "Congrants!",
+      message: "You have successfully created recipe",
+      color: "teal",
+    });
   }, [form, data]);
 
   return (

@@ -11,11 +11,14 @@ import {
   Button,
   Stack,
   Divider,
+  Image
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { YMaps } from "@pbe/react-yandex-maps";
+import { Map, Placemark, YMaps } from "@pbe/react-yandex-maps";
+import { useRef } from "react";
 
 export default function Page() {
+  const mapRef = useRef(null);
   const form = useForm({
     initialValues: {
       name: "",
@@ -35,23 +38,23 @@ export default function Page() {
       <Stack gap="md">
         <FaqSimple />
         <Title
-            order={2}
-            size="h1"
-            style={{ fontFamily: "Greycliff CF, var(--mantine-font-family)" }}
-            fw={900}
-            ta="center"
-          >
-            Find us on the map
-          </Title>
+          order={2}
+          size="h1"
+          style={{ fontFamily: "Greycliff CF, var(--mantine-font-family)" }}
+          fw={900}
+          ta="center"
+        >
+          Find us on the map
+        </Title>
         <YMaps>
           <iframe
-            src="https://yandex.ru/map-widget/v1/-/CCQ~uJyj"
+            src="https://yandex.ru/map-widget/v1/"
             width="100%"
             height="400"
             title="map"
           />
         </YMaps>
-        <Divider variant="dashed"/>
+        <Divider variant="dashed" />
         <form onSubmit={form.onSubmit(() => {})}>
           <Title
             order={2}
