@@ -29,7 +29,7 @@ const roleColors: Record<string, string> = {
 
 export default function Page() {
   const [selectedUser, setSelectedUser] = useState<User | undefined>(undefined);
-  const [opened, { open, close }] = useDisclosure(false);
+  const [opened, { open, close }] = useDisclosure(false); 
   const { data: users, isLoading, error } = useFetchUsers();
   const deleteUserMutation = useDeleteUser();
 

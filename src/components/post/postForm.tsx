@@ -42,6 +42,7 @@ export function PostForm() {
       title: values.title,
       description: values.description,
       category: values.category,
+      rating: values.rating,
       author_id: Number(data?.user?.id),
     };
 

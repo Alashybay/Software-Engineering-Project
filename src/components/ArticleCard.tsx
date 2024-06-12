@@ -30,6 +30,7 @@ const linkProps = {
 
 export default function ArticleCard(props: { post: Partial<Post> }) {
   const theme = useMantineTheme();
+  const router = useRouter();
   const [favorites, setFavorites] = useState<Post[]>([]);
   const [selected, setSelected] = useState<boolean>(false);
   const post = props.post;
@@ -86,7 +87,7 @@ export default function ArticleCard(props: { post: Partial<Post> }) {
       withBorder
       radius="md"
       className={classes.card}
-      // onClick={() => router.push(`/posts/${post.id}`)}
+      onClick={() => router.push(`/posts/${post.id}`)}
     >
       <Card.Section>
         <Image

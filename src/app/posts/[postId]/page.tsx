@@ -53,7 +53,6 @@ export default function Page() {
 
   const authorName = author?.[0]?.firstname + " " + author?.[0]?.surname;
 
-  const [rating, setRating] = useState(0);
   return (
     <Layout>
       {isLoading || isFetching ? (
@@ -78,11 +77,11 @@ export default function Page() {
               <Group justify="space-between">
                 <Group>
                   <Text fw="bold">Rating:</Text>
-                  <Rating value={rating} onChange={setRating} />
+                  <Rating size="md" value={currentPost?.rating} readOnly/>
                 </Group>
                 <Group>
                   <Text fw="bold">Category:</Text>
-                  <Badge size="md" className={classes.rating} color="lime">
+                  <Badge size="md" className={classes.rating} color="green">
                     {currentPost?.category}
                   </Badge>
                 </Group>
