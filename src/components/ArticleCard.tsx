@@ -87,7 +87,7 @@ export default function ArticleCard(props: { post?: Post }) {
       withBorder
       radius="md"
       className={classes.card}
-      onClick={() => router.push(`/posts/${post.id}`)}
+      onClick={() => router.push(`/posts/${post?.id}`)}
     >
       <Card.Section>
         <Image
