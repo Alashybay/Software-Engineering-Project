@@ -24,7 +24,7 @@ export default function Page() {
       surname: "",
       email: "",
       password: "",
-      age: "",
+      age: 0,
       phone: "",
     },
   });
@@ -38,7 +38,7 @@ export default function Page() {
         email: user[0].email,
         password: user[0].password,
         age: user[0].age,
-        phone: user[0].phone,
+        phone: user[0].phone || "",
       });
     }
   }, [user]);
