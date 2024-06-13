@@ -12,6 +12,7 @@ export type User ={
     avatar?:string;
     role?: string;
     is_admin?:number,
+    is_sub?: number;
   }
 export type UserFetch ={
   id: number;
@@ -26,4 +27,5 @@ export type UserFetch ={
   avatar?:string;
   role?: string;
   is_admin?:number,
+  is_sub?: number;
 }

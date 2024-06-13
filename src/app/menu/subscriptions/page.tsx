@@ -1,6 +1,7 @@
 "use client";
 
 import { Layout } from "@/src/components/Layout";
+import { useUpdateUser } from "@/src/hooks/useUpdateUser";
 import {
   Button,
   Divider,
@@ -16,10 +17,9 @@ import {
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import { IconCashBanknote, IconCheck } from "@tabler/icons-react";
-import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 export default function Page() {
-  const [is_subscribed, setIsSubscribed] = useState(false);
   const form = useForm({
     initialValues: {
       sub_type: "",
@@ -36,12 +36,33 @@ export default function Page() {
     },
   });
 
+  const updateUserMutation = useUpdateUser();
+  const { data: session } = useSession();
+
+  const handleUpdate = async () => {
+    if (session?.user?.id) {
+      await updateUserMutation.mutateAsync({
+        userId: Number(session.user?.id),
+        updatedUserInfo: {
+          is_sub: 1,
+        },
+      });
+    } else {
+      notifications.show({
+        title: "Error",
+        message: "Please login to subscribe",
+        color: "red",
+      });
+    }
+  };
+
   const date = new Date();
   const nextMonthDate = new Date(date.setMonth(date.getMonth() + 1));
   const month = nextMonthDate.toLocaleString("default", { month: "long" });
 
   const handleSubmit = () => {
     if (form.isValid()) {
+      handleUpdate();
       notifications.show({
         title: "Subscription successful!",
         message: `You have successfully subscribed to our service!`,
@@ -54,7 +75,6 @@ export default function Page() {
         icon: <IconCashBanknote />,
         color: "orange",
       });
-      setIsSubscribed(true);
     } else {
       notifications.show({
         title: "Subscription failed!",
@@ -67,7 +87,7 @@ export default function Page() {
 
   return (
     <Layout>
-      <form onSubmit={handleSubmit}>
+      <form>
         <Stack>
           <Title order={3} fw="normal">
             Please fill out your form for subscription!

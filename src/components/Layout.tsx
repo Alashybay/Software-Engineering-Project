@@ -1,5 +1,6 @@
 import {
   AppShell,
+  Badge,
   Burger,
   Container,
   Group,
@@ -10,6 +11,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { usePathname, useRouter } from "next/navigation";
 import {
   IconBooks,
+  IconCircleCheck,
   IconDoorExit,
   IconHeart,
   IconHome,
@@ -18,6 +20,7 @@ import {
 } from "@tabler/icons-react";
 
 import { signOut as nextAuthSignOut, useSession } from "next-auth/react";
+import { useFetchUsers } from "../hooks/useGetUsers";
 
 interface AppLayoutProps {
   children: JSX.Element;
@@ -38,6 +41,15 @@ export function Layout({ children }: AppLayoutProps): JSX.Element {
   const router = useRouter();
   const navigation = usePathname();
 
+  const { data: user } = useFetchUsers(
+    {
+      id: data?.user.id,
+    },
+    {
+      enabled: !!data?.user.id,
+    }
+  );
+
   const handleLogout = () => {
     nextAuthSignOut({
       callbackUrl: "/",
@@ -45,6 +57,7 @@ export function Layout({ children }: AppLayoutProps): JSX.Element {
   };
 
   const is_admin = data?.user.is_admin;
+  const is_sub = user?.[0]?.is_sub;
 
   const filteredRoutes = routes.filter(
     (route) => route.show === true || (route.show === false && is_admin)
@@ -63,13 +76,28 @@ export function Layout({ children }: AppLayoutProps): JSX.Element {
       <AppShell.Header>
         <Group h="100%" px="md">
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <Title
-            order={3}
-            onClick={() => router.push("/posts")}
-            style={{ cursor: "pointer" }}
-          >
-            FoodHub
-          </Title>
+          <Group>
+            <Title
+              order={3}
+              onClick={() => router.push("/posts")}
+              style={{ cursor: "pointer" }}
+            >
+              FoodHub
+            </Title>
+            {is_sub ? (
+              <Badge color="teal" variant="filled">
+                Verified Chef
+              </Badge>
+            ) : (
+              <Badge
+                color="orange"
+                variant="filled"
+                onClick={() => router.push("/menu/subscriptions")}
+              >
+                Subscribe to become a chef!
+              </Badge>
+            )}
+          </Group>
         </Group>
       </AppShell.Header>
       <AppShell.Navbar p="md">
