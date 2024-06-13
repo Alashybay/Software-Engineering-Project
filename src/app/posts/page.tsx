@@ -28,7 +28,7 @@ export default function Page() {
   const { data, isLoading } = useFetchPosts();
   const { data: userInfo } = useFetchUsers({ id: userData?.user.id });
   const [content, setContent] = useState<ReactNode>();
-  const [recommended, setRecommended] = useState<boolean>(false);
+  const [recommended, setRecommended] = useState<boolean>(true);
   const [sortAscending, setSortAscending] = useState<boolean>(true);
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [posts, setPosts] = useState<Post[] | undefined>();
