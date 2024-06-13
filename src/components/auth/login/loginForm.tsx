@@ -56,13 +56,6 @@ export function LoginForm() {
         <Button fullWidth type="submit">
           Sign in
         </Button>
-        <Anchor
-          component="button"
-          size="sm"
-          onClick={() => router.push("/forgotPassword")}
-        >
-          Forgot password?
-        </Anchor>
       </Stack>
     </form>
   );
