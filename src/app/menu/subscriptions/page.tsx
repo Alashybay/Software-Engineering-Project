@@ -56,8 +56,7 @@ export default function Page() {
         color: "orange",
       });
       setIsSubscribed(true);
-    }
-    else {
+    } else {
       notifications.show({
         title: "Subscription failed!",
         message: `Please fill out the form correctly.`,
@@ -65,7 +64,6 @@ export default function Page() {
         icon: <IconCheck />,
       });
     }
-
   };
 
   return (
@@ -82,27 +80,10 @@ export default function Page() {
           </Text>
           <Divider variant="dashed" />
 
-          <Radio.Group
-            label="Choose your plan:"
-            description="Subscription can be cancelled at any time by emailing our support."
-            withAsterisk
-            {...form.getInputProps("sub_type")}
-          >
-            <Stack mt="md">
-              <Radio
-                value="gold"
-                label="Gold - $2/month (get your verified chef badge)"
-              />
-              <Radio
-                value="silver"
-                label="Silver - $3/month (get your verified chef badge and access to dashboard)"
-              />
-              <Radio
-                value="bronze"
-                label="Bronze - $4/month (get your verified chef badge, access to dashboard and priority support)"
-              />
-            </Stack>
-          </Radio.Group>
+          <Radio
+            value="chef"
+            label="Chef - $2/month (get your verified chef badge)"
+          />
           <Divider variant="dashed" />
           <Paper shadow="md" withBorder radius="md" p="lg">
             <Stack>
