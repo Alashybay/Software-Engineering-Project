@@ -29,7 +29,6 @@ export default function Page() {
       cvv: "",
     },
     validate: {
-      sub_type: (value) => !value && "Please choose a subscription plan",
       cardholderName: (value) => value.length < 3 && "Name is too short",
       cardNumber: (value) => value.length < 16 && "Card number is too short",
       expiryDate: (value) => value.length < 5 && "Invalid date",
@@ -83,6 +82,7 @@ export default function Page() {
           <Radio
             value="chef"
             label="Chef - $2/month (get your verified chef badge)"
+            {...form.getInputProps("sub_type")}
           />
           <Divider variant="dashed" />
           <Paper shadow="md" withBorder radius="md" p="lg">

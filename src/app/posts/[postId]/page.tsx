@@ -6,9 +6,7 @@ import { useFetchPosts } from "@/src/hooks/useGetPosts";
 import { useFetchUsers } from "@/src/hooks/useGetUsers";
 import {
   Avatar,
-  Badge,
-  Box,
-  Button,
+  Badge, Button,
   Card,
   Center,
   Container,
@@ -18,11 +16,11 @@ import {
   Rating,
   Skeleton,
   Stack,
-  Text,
+  Text
 } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import classes from "../../../styles/ActionsGrid.module.css";
 import { notifications } from "@mantine/notifications";
 
