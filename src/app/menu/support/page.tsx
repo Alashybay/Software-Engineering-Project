@@ -11,9 +11,10 @@ import {
   Button,
   Stack,
   Divider,
-  Image
+  Image,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { notifications } from "@mantine/notifications";
 import { Map, Placemark, YMaps } from "@pbe/react-yandex-maps";
 import { useRef } from "react";
 
@@ -32,6 +33,23 @@ export default function Page() {
       subject: (value) => value.trim().length === 0,
     },
   });
+
+  const handleSubmit = () => {
+    if (form.isValid()) {
+      notifications.show({
+        title: "Message sent",
+        message: "We will get back to you as soon as possible",
+        color: "teal",
+      });
+      console.log(form.values);
+    } else {
+      notifications.show({
+        title: "Form is invalid",
+        message: "Please fill all fields correctly",
+        color: "red",
+      });
+    }
+  };
 
   return (
     <Layout>
@@ -55,7 +73,7 @@ export default function Page() {
           />
         </YMaps>
         <Divider variant="dashed" />
-        <form onSubmit={form.onSubmit(() => {})}>
+        <form>
           <Title
             order={2}
             size="h1"
@@ -104,9 +122,7 @@ export default function Page() {
           />
 
           <Group justify="center" mt="xl">
-            <Button type="submit" size="md">
-              Send message
-            </Button>
+            <Button size="md" onClick={handleSubmit}>Send message</Button>
           </Group>
         </form>
       </Stack>
