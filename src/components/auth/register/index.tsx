@@ -37,6 +37,7 @@ export function Register(props: PaperProps) {
       is_admin: 0,
       preferences: "",
       age: 0,
+      is_sub: 0,
     },
     validate: (values) => {
       const errors: Record<string, string> = {};
@@ -75,6 +76,7 @@ export function Register(props: PaperProps) {
       age: form.values.age,
       preferences: form.values.preferences,
       is_admin: 0,
+      is_sub: 0,
     };
     createNewUser.mutate({ newUserInfo: newUser });
     router.push("/signIn");

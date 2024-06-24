@@ -10,38 +10,61 @@ import {
   Title,
   Button,
   Stack,
-  Divider,
-  Image,
+  Divider
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
-import { Map, Placemark, YMaps } from "@pbe/react-yandex-maps";
-import { useRef } from "react";
+import { YMaps } from "@pbe/react-yandex-maps";
+import { useRef, FormEvent } from "react";
+import emailjs from '@emailjs/browser';
 
 export default function Page() {
   const mapRef = useRef(null);
+  const formRef = useRef<HTMLFormElement>(null);
+
   const form = useForm({
     initialValues: {
-      name: "",
-      email: "",
+      user_name: "",
+      user_email: "",
       subject: "",
       message: "",
     },
     validate: {
-      name: (value) => value.trim().length < 2,
-      email: (value) => !/^\S+@\S+$/.test(value),
+      user_name: (value) => value.trim().length < 2,
+      user_email: (value) => !/^\S+@\S+$/.test(value),
       subject: (value) => value.trim().length === 0,
     },
   });
 
-  const handleSubmit = () => {
+  const sendEmail = (e: FormEvent) => {
+    e.preventDefault();
+
+    if (formRef.current) {
+      emailjs
+        .sendForm('service_1e59q6n', 'template_z4cqbcp', formRef.current, 'LEl0jBvr0JFitA2EJ')
+        .then(
+          () => {
+            notifications.show({
+              title: "Message sent",
+              message: "We will get back to you as soon as possible",
+              color: "teal",
+            });
+          },
+          (error) => {
+            notifications.show({
+              title: "Failed to send",
+              message: "There was an issue sending your message. Please try again later.",
+              color: "red",
+            });
+          }
+        );
+    }
+  };
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
     if (form.isValid()) {
-      notifications.show({
-        title: "Message sent",
-        message: "We will get back to you as soon as possible",
-        color: "teal",
-      });
-      console.log(form.values);
+      sendEmail(e);
     } else {
       notifications.show({
         title: "Form is invalid",
@@ -73,7 +96,7 @@ export default function Page() {
           />
         </YMaps>
         <Divider variant="dashed" />
-        <form>
+        <form ref={formRef} onSubmit={handleSubmit}>
           <Title
             order={2}
             size="h1"
@@ -88,16 +111,16 @@ export default function Page() {
             <TextInput
               label="Name"
               placeholder="Your name"
-              name="name"
+              name="user_name"
               variant="filled"
-              {...form.getInputProps("name")}
+              {...form.getInputProps("user_name")}
             />
             <TextInput
               label="Email"
               placeholder="Your email"
-              name="email"
+              name="user_email"
               variant="filled"
-              {...form.getInputProps("email")}
+              {...form.getInputProps("user_email")}
             />
           </SimpleGrid>
 
@@ -122,7 +145,7 @@ export default function Page() {
           />
 
           <Group justify="center" mt="xl">
-            <Button size="md" onClick={handleSubmit}>Send message</Button>
+            <Button size="md" type="submit">Send message</Button>
           </Group>
         </form>
       </Stack>
