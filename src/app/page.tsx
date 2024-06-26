@@ -93,42 +93,28 @@ export default function Page() {
                   />
                 </Paper>
               </Grid.Col>
-              <Grid.Col span={6}>
-                <Paper h="auto" radius="md" p="md" withBorder>
-                  <PieChart
-                    h={300}
-                    withLabelsLine
-                    labelsPosition="inside"
-                    labelsType="percent"
-                    withLabels
-                    withTooltip
-                    data={userLocationData}
-                  />
-                </Paper>
-              </Grid.Col>
-              <Grid.Col span={6}>
-                <Paper h="auto" radius="md" p="md" withBorder>
-                  <List
-                    spacing="xs"
-                    size="sm"
-                    center
-                    icon={
-                      <ThemeIcon color="teal" size={24} radius="xl">
-                        <IconCircleCheck
-                          style={{ width: rem(16), height: rem(16) }}
-                        />
-                      </ThemeIcon>
-                    }
-                  >
-                    <List.Item>Collect data from sources</List.Item>
-                    <List.Item>Clean and preprocess data</List.Item>
-                    <List.Item>Analyze data patterns</List.Item>
-                    <List.Item>Build statistical models</List.Item>
-                    <List.Item>Create reports and dashboards</List.Item>
-                    <List.Item>Implement data pipelines</List.Item>
-                  </List>
-                </Paper>
-              </Grid.Col>
+
+              <Paper h="auto" radius="md" p="md" withBorder>
+                <List
+                  spacing="xs"
+                  size="sm"
+                  center
+                  icon={
+                    <ThemeIcon color="teal" size={24} radius="xl">
+                      <IconCircleCheck
+                        style={{ width: rem(16), height: rem(16) }}
+                      />
+                    </ThemeIcon>
+                  }
+                >
+                  <List.Item>Collect data from sources</List.Item>
+                  <List.Item>Clean and preprocess data</List.Item>
+                  <List.Item>Analyze data patterns</List.Item>
+                  <List.Item>Build statistical models</List.Item>
+                  <List.Item>Create reports and dashboards</List.Item>
+                  <List.Item>Implement data pipelines</List.Item>
+                </List>
+              </Paper>
             </Grid>
           </Stack>
         </Container>
