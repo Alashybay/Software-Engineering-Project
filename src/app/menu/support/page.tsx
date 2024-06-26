@@ -14,9 +14,10 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
-import { YMaps } from "@pbe/react-yandex-maps";
-import { useRef, FormEvent } from "react";
-import emailjs from '@emailjs/browser';
+import { Placemark, YMaps } from "@pbe/react-yandex-maps";
+import { useRef, FormEvent, useState } from "react";
+import emailjs from "@emailjs/browser";
+import { Map } from "@pbe/react-yandex-maps";
 
 export default function Page() {
   const mapRef = useRef(null);
@@ -41,7 +42,12 @@ export default function Page() {
 
     if (formRef.current) {
       emailjs
-        .sendForm('service_1e59q6n', 'template_z4cqbcp', formRef.current, 'LEl0jBvr0JFitA2EJ')
+        .sendForm(
+          "service_1e59q6n",
+          "template_z4cqbcp",
+          formRef.current,
+          "LEl0jBvr0JFitA2EJ"
+        )
         .then(
           () => {
             notifications.show({
@@ -53,7 +59,8 @@ export default function Page() {
           (error) => {
             notifications.show({
               title: "Failed to send",
-              message: "There was an issue sending your message. Please try again later.",
+              message:
+                "There was an issue sending your message. Please try again later.",
               color: "red",
             });
           }
@@ -74,6 +81,14 @@ export default function Page() {
     }
   };
 
+  const [latitude, setLatitude] = useState(0);
+  const [longitude, setLongitude] = useState(0);
+
+  navigator.geolocation.getCurrentPosition((position) => {
+    setLatitude(position.coords.latitude);
+    setLongitude(position.coords.longitude);
+  });
+
   return (
     <Layout>
       <Stack gap="md">
@@ -88,12 +103,24 @@ export default function Page() {
           Find us on the map
         </Title>
         <YMaps>
-          <iframe
-            src="https://yandex.ru/map-widget/v1/"
+          <Map
+            language="en_US"
+            defaultState={{
+              center: [latitude, longitude],
+              zoom: 14,
+            }}
             width="100%"
-            height="400"
-            title="map"
-          />
+            height={400}
+          >
+            <Placemark
+              geometry={[latitude, longitude]}
+              options={{
+                iconImageSize: [35, 35],
+                iconImageOffset: [-15, -15],
+                iconColor: "#353935",
+              }}
+            />
+          </Map>
         </YMaps>
         <Divider variant="dashed" />
         <form ref={formRef} onSubmit={handleSubmit}>
@@ -145,7 +172,9 @@ export default function Page() {
           />
 
           <Group justify="center" mt="xl">
-            <Button size="md" type="submit">Send message</Button>
+            <Button size="md" type="submit">
+              Send message
+            </Button>
           </Group>
         </form>
       </Stack>
