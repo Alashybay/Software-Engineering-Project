@@ -10,7 +10,8 @@ import {
   Title,
   Button,
   Stack,
-  Divider
+  Divider,
+  Text
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
@@ -102,6 +103,7 @@ export default function Page() {
         >
           Find us on the map
         </Title>
+        <Text ta="center" c="dimmed">Red in is your current location and Black pin is our head office</Text>
         <YMaps>
           <Map
             language="en_US"
@@ -125,7 +127,7 @@ export default function Page() {
               options={{
                 iconImageSize: [35, 35],
                 iconImageOffset: [-15, -15],
-                iconColor: "#071952",
+                iconColor: "red",
               }}
             />
           </Map>
