@@ -106,18 +106,26 @@ export default function Page() {
           <Map
             language="en_US"
             defaultState={{
-              center: [latitude, longitude],
+              center: [38.192329, 15.555520],
               zoom: 14,
             }}
             width="100%"
             height={400}
           >
             <Placemark
-              geometry={[latitude, longitude]}
+              geometry={[38.192329, 15.555520]}
               options={{
                 iconImageSize: [35, 35],
                 iconImageOffset: [-15, -15],
                 iconColor: "#353935",
+              }}
+            />
+            <Placemark
+              geometry={[latitude, longitude]}
+              options={{
+                iconImageSize: [35, 35],
+                iconImageOffset: [-15, -15],
+                iconColor: "#071952",
               }}
             />
           </Map>
