@@ -16,11 +16,7 @@ import {
 import { Layout } from "../components/Layout";
 import { BarChart, LineChart, PieChart, ScatterChart } from "@mantine/charts";
 import { IconCircleCheck } from "@tabler/icons-react";
-import {
-  deviceUsageData,
-  userData,
-  userLocationData,
-} from "../mocks/statistics.mock";
+import { deviceUsageData, userLocationData } from "../mocks/statistics.mock";
 import { useFetchUsers } from "../hooks/useGetUsers";
 import { useFetchPosts } from "../hooks/useGetPosts";
 

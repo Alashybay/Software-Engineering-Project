@@ -9,11 +9,12 @@ import {
   Group,
   Rating,
   Text,
+  Checkbox,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useSession } from "next-auth/react";
-import { useCallback } from "react";
-import { Post } from "../../typings/post";
+import { useCallback, useState } from "react";
+import { Ingredient, Post } from "../../typings/post";
 import { useCreateNewPost } from "@/src/hooks/createPost";
 import { useRouter } from "next/navigation";
 import { notifications } from "@mantine/notifications";
@@ -22,14 +23,18 @@ export function PostForm() {
   const { data } = useSession();
   const createPost = useCreateNewPost();
   const router = useRouter();
+  const [ingredients, setIngredients] = useState<Ingredient[]>([
+    { name: "", weight: "" },
+  ]);
 
   const form = useForm({
     initialValues: {
       title: "",
       description: "",
-      category: "",
+      cuisine: "",
       rating: 0,
       author_id: 0,
+      glutenFree: false,
     },
   });
 
@@ -41,26 +46,52 @@ export function PostForm() {
     const post: Post = {
       title: values.title,
       description: values.description,
-      category: values.category,
       rating: values.rating,
       author_id: Number(data?.user?.id),
+      recipe: {
+        ingredients: ingredients.map((ingredient) => ({
+          name: ingredient.name,
+          weight: ingredient.weight,
+        })),
+        cuisine: values.cuisine,
+        isGlutenFree: values.glutenFree,
+      },
+      clicks: 0,
     };
 
     createPost.mutate({ newPostInfo: post });
     router.push("/posts");
     notifications.show({
-      title: "Congrants!",
-      message: "You have successfully created recipe",
+      title: "Congrats!",
+      message: "You have successfully created a recipe",
       color: "teal",
     });
-  }, [form, data]);
+  }, [form, data, ingredients]);
+
+  const addIngredient = () => {
+    setIngredients([...ingredients, { name: "", weight: "" }]);
+  };
+
+  const removeIngredient = (index: number) => {
+    setIngredients(ingredients.filter((_, i) => i !== index));
+  };
+
+  const updateIngredient = (
+    index: number,
+    field: keyof Ingredient,
+    value: string
+  ) => {
+    const newIngredients = ingredients.slice();
+    newIngredients[index][field] = value;
+    setIngredients(newIngredients);
+  };
 
   return (
     <form>
       <Paper p="lg" shadow="md" radius="md" withBorder>
         <Stack>
           <Title order={4} ta="center">
-            Create a new recipe
+            Create a new recipe for 300gr.
           </Title>
           <TextInput
             label="Recipe Title"
@@ -74,24 +105,17 @@ export function PostForm() {
             {...form.getInputProps("description")}
           />
           <Select
-            label="Food Category"
-            placeholder="Select your favorite category"
+            label="Cuisine"
+            placeholder="Select cuisine"
             searchable
             clearable
             data={[
-              { value: "fast_food", label: "Fast Food" },
               { value: "italian", label: "Italian" },
               { value: "mexican", label: "Mexican" },
               { value: "indian", label: "Indian" },
               { value: "chinese", label: "Chinese" },
-              { value: "vegetarian", label: "Vegetarian" },
-              { value: "vegan", label: "Vegan" },
-              { value: "desserts", label: "Desserts" },
-              { value: "seafood", label: "Seafood" },
-              { value: "gluten_free", label: "Gluten Free" },
-              { value: "pizza", label: "Pizza" },
             ]}
-            {...form.getInputProps("category")}
+            {...form.getInputProps("cuisine")}
           />
           <Group>
             <Text fw="normal">Add your rating: </Text>
@@ -101,6 +125,35 @@ export function PostForm() {
               size="lg"
             />
           </Group>
+          <Checkbox
+            label="Gluten Free"
+            {...form.getInputProps("glutenFree", { type: "checkbox" })}
+          />
+          <Title order={5}>Ingredients</Title>
+          {ingredients.map((ingredient, index) => (
+            <Group key={index}>
+              <TextInput
+                placeholder="Ingredient name"
+                value={ingredient.name}
+                onChange={(event) =>
+                  updateIngredient(index, "name", event.currentTarget.value)
+                }
+              />
+              <TextInput
+                placeholder="Weight"
+                value={ingredient.weight}
+                onChange={(event) =>
+                  updateIngredient(index, "weight", event.currentTarget.value)
+                }
+              />
+              <Button color="red" onClick={() => removeIngredient(index)}>
+                Remove
+              </Button>
+            </Group>
+          ))}
+          <Button onClick={addIngredient} variant="outline">
+            Add Ingredient
+          </Button>
           <Group justify="right">
             <Button color="blue" variant="gradient" onClick={handleSubmit}>
               Create Recipe

@@ -6,23 +6,26 @@ import { useFetchPosts } from "@/src/hooks/useGetPosts";
 import { useFetchUsers } from "@/src/hooks/useGetUsers";
 import {
   Avatar,
-  Badge, Button,
+  Badge,
+  Button,
   Card,
   Center,
   Container,
   Divider,
   Group,
   Image,
+  Paper,
   Rating,
   Skeleton,
   Stack,
-  Text
+  Text,
 } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import classes from "../../../styles/ActionsGrid.module.css";
 import { notifications } from "@mantine/notifications";
+import { IngredientTable } from "@/src/components/ingredientTable";
 
 export default function Page() {
   const route = useRouter();
@@ -35,6 +38,11 @@ export default function Page() {
   });
   const currentPost = data?.[0];
   const { data: author } = useFetchUsers({ id: currentPost?.author_id });
+  const [currentSize, setCurrentSize] = useState<number>(1);
+  const [currentRecipe, setCurrentRecipe] = useState(
+    currentPost?.recipe.ingredients
+  );
+
   const handleDelete = useCallback(() => {
     deletePost.mutate(Number(post.postId));
     route.push("/posts");
@@ -42,14 +50,28 @@ export default function Page() {
       title: "Post deleted",
       message: "Post has been successfully deleted",
       color: "green",
-    })
+    });
   }, [deletePost, post.postId]);
 
-  const skeletons = [...Array(Math.floor(Math.random() * 5) + 1)].map(
-    (index) => <Skeleton w="100%" height={100} key={index} />
-  );
+  const skeletons = [
+    ...Array(Math.floor(Math.random() * 5) + 1),
+  ].map((index) => <Skeleton w="100%" height={100} key={index} />);
 
   const authorName = author?.[0]?.firstname + " " + author?.[0]?.surname;
+
+  const adjustRecipe = useCallback(
+    (newSize: number) => {
+      const ratio = newSize / currentSize;
+      const adjustedIngredients = currentRecipe?.map((ingredient) => ({
+        ...ingredient,
+        weight: (Number(ingredient.weight) * ratio).toString(),
+      }));
+
+      setCurrentRecipe(adjustedIngredients);
+      setCurrentSize(newSize);
+    },
+    [currentRecipe, currentSize]
+  );
 
   return (
     <Layout>
@@ -75,23 +97,77 @@ export default function Page() {
               <Group justify="space-between">
                 <Group>
                   <Text fw="bold">Rating:</Text>
-                  <Rating size="md" value={currentPost?.rating} readOnly/>
+                  <Rating size="md" value={currentPost?.rating} readOnly />
                 </Group>
                 <Group>
-                  <Text fw="bold">Category:</Text>
+                  <Text fw="bold">Cuisine:</Text>
                   <Badge size="md" className={classes.rating} color="green">
-                    {currentPost?.category}
+                    {currentPost?.recipe.cuisine}
                   </Badge>
                 </Group>
               </Group>
-
-              <Text fw="bold">
-                Description:
-                <Text fz="sm" span lineClamp={4} maw={800}>
-                  {currentPost?.description}
+              <Group justify="space-between">
+                <Text fw="bold">
+                  Description:
+                  <Text fz="sm" span lineClamp={4} maw={800}>
+                    {currentPost?.description}
+                  </Text>
                 </Text>
-              </Text>
-
+                <Group>
+                  <Text fw="bold">Gluten Free:</Text>
+                  <Badge size="md" className={classes.rating} color="blue">
+                    {currentPost?.recipe.isGlutenFree ? "Yes" : "No"}
+                  </Badge>
+                </Group>
+              </Group>
+              <Divider variant="dashed" />
+              <Group justify="space-between">
+                <Text fw="bold">Ingredients:</Text>
+                <Text fw="bold">Serving:</Text>
+              </Group>
+              <Group justify="space-between" align="flex-start">
+                <Group style={{ width: "50%" }}>
+                  <Paper withBorder p="md">
+                    <IngredientTable ingredients={currentRecipe ?? []} />
+                  </Paper>
+                </Group>
+                <Group
+                  justify="right"
+                  style={{
+                    width: "40%",
+                  }}
+                >
+                  <Button
+                    onClick={() => adjustRecipe(1)}
+                    color="green"
+                    style={{ width: "50%" }}
+                  >
+                    1 serving
+                  </Button>
+                  <Button
+                    onClick={() => adjustRecipe(2)}
+                    color="green"
+                    style={{ width: "50%" }}
+                  >
+                    2 servings
+                  </Button>
+                  <Button
+                    onClick={() => adjustRecipe(3)}
+                    color="orange"
+                    style={{ width: "50%" }}
+                  >
+                    3 servings
+                  </Button>
+                  <Button
+                    onClick={() => adjustRecipe(5)}
+                    color="orange"
+                    style={{ width: "50%" }}
+                  >
+                    4-5 servings
+                  </Button>
+                </Group>
+              </Group>
+              <Divider variant="dashed" />
               <Group justify="space-between" className={classes.footer}>
                 <Center>
                   <Group>

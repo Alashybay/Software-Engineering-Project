@@ -63,3 +63,12 @@ export const fetchPosts = async (filters?: Record<string, any>): Promise<Post[]>
     const response: AxiosResponse<Post[]> = await api.get('/posts', { params: filters });
     return response.data;
 };
+
+export const updateClickCount = async (postId: number): Promise<AxiosResponse<Record<string, any>>> => {
+    try {
+        const response: AxiosResponse<Record<string, any>> = await api.put(`/posts/${postId}/click`);
+        return response;
+    } catch (error: any) {
+        throw new Error(`Failed to update click count: ${error.message}`);
+    }
+};

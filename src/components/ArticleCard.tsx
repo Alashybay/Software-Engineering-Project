@@ -28,7 +28,10 @@ const linkProps = {
   rel: "noopener noreferrer",
 };
 
-export default function ArticleCard(props: { post?: Post }) {
+export default function ArticleCard(props: {
+  post?: Post;
+  clikcCount?: (id?: number) => void;
+}) {
   const theme = useMantineTheme();
   const router = useRouter();
   const [favorites, setFavorites] = useState<Post[]>([]);
@@ -80,14 +83,13 @@ export default function ArticleCard(props: { post?: Post }) {
     },
     [favorites, post, selected]
   );
+  const handleClick = useCallback(() => {
+    router.push(`/posts/${post?.id}`);
+    if (props.clikcCount) props.clikcCount(post?.id);
+  }, [post?.id, props, router]);
 
   return (
-    <Card
-      withBorder
-      radius="md"
-      className={classes.card}
-      onClick={() => router.push(`/posts/${post?.id}`)}
-    >
+    <Card withBorder radius="md" className={classes.card} onClick={handleClick}>
       <Card.Section>
         <Image
           src="https://i.pinimg.com/564x/96/7e/56/967e5643272d8399272fbca413674762.jpg"
@@ -96,7 +98,7 @@ export default function ArticleCard(props: { post?: Post }) {
       </Card.Section>
 
       <Badge className={classes.rating} color="green">
-        {post?.category}
+        {post?.recipe?.cuisine ?? "sss"}
       </Badge>
 
       <Text className={classes.title} fw={500} component="a" {...linkProps}>

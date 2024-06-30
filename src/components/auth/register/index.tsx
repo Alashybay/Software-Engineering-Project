@@ -8,12 +8,11 @@ import {
   Divider,
   Anchor,
   Stack,
-  Title,
-  NumberInput,
   TextInput,
   PasswordInput,
+  NumberInput,
   Checkbox,
-  Select,
+  MultiSelect,
 } from "@mantine/core";
 import { useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -35,7 +34,12 @@ export function Register(props: PaperProps) {
       email: "",
       password: "",
       is_admin: 0,
-      preferences: "",
+      user_preference: {
+        cuisines: [],
+        ingredients: [],
+        allergies: [],
+        glutenFreeOnly: false,
+      },
       age: 0,
       is_sub: 0,
     },
@@ -74,10 +78,12 @@ export function Register(props: PaperProps) {
       email: form.values.email,
       password: hashString(form.values.password),
       age: form.values.age,
-      preferences: form.values.preferences,
+      user_preference: form.values.user_preference,
       is_admin: 0,
       is_sub: 0,
     };
+    console.log(newUser);
+
     createNewUser.mutate({ newUserInfo: newUser });
     router.push("/signIn");
   }, [form, createNewUser]);
@@ -90,8 +96,8 @@ export function Register(props: PaperProps) {
       <form onSubmit={form.onSubmit(() => {})}>
         <Stack>
           <TextInput
-            label="firstname"
-            placeholder="Your firstname"
+            label="First Name"
+            placeholder="Your first name"
             value={form.values.firstname}
             onChange={(event) =>
               form.setFieldValue("firstname", event.currentTarget.value)
@@ -99,7 +105,7 @@ export function Register(props: PaperProps) {
             radius="md"
           />
           <TextInput
-            label="surname"
+            label="Surname"
             placeholder="Your surname"
             value={form.values.surname}
             onChange={(event) =>
@@ -141,25 +147,53 @@ export function Register(props: PaperProps) {
             hideControls
             {...form.getInputProps("age")}
           />
-          <Select
-            label="Choose Your Favorite Food Categories"
-            description="Tell us what you love so we can recommend recipes you'll enjoy!"
-            placeholder="Select your favorite categories"
-            searchable
+          <MultiSelect
+            checkIconPosition="right"
             data={[
               { value: "fast_food", label: "Fast Food" },
               { value: "italian", label: "Italian" },
-              { value: "mexican", label: "Mexican" },
-              { value: "indian", label: "Indian" },
-              { value: "chinese", label: "Chinese" },
-              { value: "vegetarian", label: "Vegetarian" },
-              { value: "vegan", label: "Vegan" },
-              { value: "desserts", label: "Desserts" },
-              { value: "seafood", label: "Seafood" },
-              { value: "gluten_free", label: "Gluten Free" },
-              { value: "pizza", label: "Pizza" },
             ]}
-            {...form.getInputProps("preferences")}
+            searchable
+            nothingFoundMessage="Nothing found..."
+            label="Which cuisines do you prefer?"
+            description="Tell us what you love so we can recommend recipes you'll enjoy!"
+            placeholder="Select your favorite cuisines"
+            {...form.getInputProps("user_preference.cuisines")}
+          />
+          <Checkbox
+            label="Gluten Free only?"
+            checked={form.values.user_preference.glutenFreeOnly}
+            onChange={(event) =>
+              form.setFieldValue(
+                "user_preference.glutenFreeOnly",
+                event.currentTarget.checked
+              )
+            }
+          />
+          <MultiSelect
+            checkIconPosition="right"
+            data={[
+              { value: "tomato", label: "Tomato" },
+              { value: "nuts", label: "Nuts" },
+            ]}
+            searchable
+            nothingFoundMessage="Nothing found..."
+            label="What are your favorite ingredients?"
+            placeholder="Select your favorite ingredients"
+            {...form.getInputProps("user_preference.ingredients")}
+          />
+          <MultiSelect
+            checkIconPosition="right"
+            data={[
+              { value: "tomato", label: "Tomato" },
+              { value: "nuts", label: "Nuts" },
+            ]}
+            searchable
+            nothingFoundMessage="Nothing found..."
+            label="Do you have any allergies?"
+            description="If you don't have any allergies then no need to select"
+            placeholder="Select ingredient allergy"
+            {...form.getInputProps("user_preference.allergies")}
           />
           <Checkbox
             label="I accept terms and conditions"

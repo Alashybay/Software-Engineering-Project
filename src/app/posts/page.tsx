@@ -5,7 +5,10 @@ import { Layout } from "@/src/components/Layout";
 import { categories } from "@/src/constants/categories";
 import { useFetchPosts } from "@/src/hooks/useGetPosts";
 import { useFetchUsers } from "@/src/hooks/useGetUsers";
+import { updateClickCount } from "@/src/services/api";
 import { Post } from "@/src/typings/post";
+import { getRecomm } from "@/src/utils/getRecomm";
+import { updateTrendingRecipe } from "@/src/utils/mostViewed";
 import {
   Button,
   Group,
@@ -35,22 +38,14 @@ export default function Page() {
   const theme = useMantineTheme();
 
   const dayRecipe = useMemo(() => {
-    if (data) return data[Math.floor(Math.random() * data?.length)];
+    return updateTrendingRecipe(data ?? []);
   }, [data]);
-
-  const cards = posts?.map((post) => <ArticleCard key={post.id} post={post} />);
-  const skeletons = useMemo(
-    () =>
-      [...Array(Math.floor(Math.random() * 5) + 1)].map((_, index) => (
-        <Skeleton w="100%" height={100} key={index} />
-      )),
-    []
-  );
 
   const showRecomms = useCallback(() => {
     const filteredPosts = recommended
-      ? data?.filter((post) => post.category === userInfo?.[0]?.preferences)
+      ? getRecomm(data ?? [], userInfo?.[0]?.user_preference)
       : data;
+
     setPosts(filteredPosts);
     setRecommended(!recommended);
   }, [data, recommended, userInfo]);
@@ -84,13 +79,49 @@ export default function Page() {
         const filteredPosts =
           category === "all"
             ? data
-            : data?.filter((post) => post.category === category);
+            : data?.filter((post) => post.recipe.cuisine === category);
         setPosts(filteredPosts);
       } else {
         setPosts(data);
       }
     },
     [data]
+  );
+
+  const handleUpdateClickCount = async (postId?: number) => {
+    if (postId)
+      try {
+        await updateClickCount(postId); // Call the function to update click count
+        // Optionally, update posts data after successful update
+        const updatedPosts = posts?.map((post) => {
+          if (post.id === postId) {
+            return {
+              ...post,
+              clicks: post.clicks ? post.clicks + 1 : 1, // Increment click count locally
+            };
+          }
+          return post;
+        });
+        setPosts(updatedPosts);
+        console.log("Click count updated successfully");
+      } catch (error) {
+        console.error("Error updating click count:");
+      }
+  };
+
+  const cards = posts?.map((post) => (
+    <ArticleCard
+      key={post.id}
+      post={post}
+      clikcCount={handleUpdateClickCount}
+    />
+  ));
+  const skeletons = useMemo(
+    () =>
+      [...Array(Math.floor(Math.random() * 5) + 1)].map((_, index) => (
+        <Skeleton w="100%" height={100} key={index} />
+      )),
+    []
   );
 
   useEffect(() => {
