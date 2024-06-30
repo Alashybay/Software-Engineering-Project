@@ -23,7 +23,6 @@ export type UserFetch = {
   age: number;
   password: string;
   phone?: string | null;
-  preferences?: Preferences,
   avatar?:string;
   role?: string;
   is_admin?:number,

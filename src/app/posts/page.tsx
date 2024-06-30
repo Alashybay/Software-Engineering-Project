@@ -45,6 +45,7 @@ export default function Page() {
     const filteredPosts = recommended
       ? getRecomm(data ?? [], userInfo?.[0]?.user_preference)
       : data;
+    console.log(filteredPosts);
 
     setPosts(filteredPosts);
     setRecommended(!recommended);
