@@ -98,7 +98,7 @@ export default function ArticleCard(props: {
       </Card.Section>
 
       <Badge className={classes.rating} color="green">
-        {post?.recipe?.cuisine ?? "sss"}
+        {post?.recipe?.cuisine}
       </Badge>
 
       <Text className={classes.title} fw={500} component="a" {...linkProps}>

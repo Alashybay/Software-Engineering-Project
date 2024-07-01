@@ -173,7 +173,7 @@ export default function Page() {
         />
         <SimpleGrid cols={{ md: 3, sm: 2 }} spacing="lg">
           <>
-            <Tooltip label="Recipe of the day!" withArrow>
+          {dayRecipe  && <Tooltip label="Recipe of the day!" withArrow>
               <Indicator
                 inline
                 size={30}
@@ -186,9 +186,9 @@ export default function Page() {
                   />
                 }
               >
-                <ArticleCard post={dayRecipe} />
+                 <ArticleCard post={dayRecipe} />
               </Indicator>
-            </Tooltip>
+            </Tooltip>}
           </>
           {content}
         </SimpleGrid>

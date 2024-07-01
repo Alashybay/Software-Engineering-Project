@@ -103,7 +103,7 @@ export default function Page() {
         >
           Find us on the map
         </Title>
-        <Text ta="center" c="dimmed">Red in is your current location and Black pin is our head office</Text>
+        <Text ta="center" c="dimmed">Red pin is your current location and Black pin is our head office</Text>
         <YMaps>
           <Map
             language="en_US"
