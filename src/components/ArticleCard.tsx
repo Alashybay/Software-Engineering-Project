@@ -1,5 +1,6 @@
 import {
   IconBookmark,
+  IconChefHat,
   IconHeart,
   IconHeartFilled,
   IconShare,
@@ -14,6 +15,7 @@ import {
   Center,
   Avatar,
   useMantineTheme,
+  Tooltip,
   rem,
 } from "@mantine/core";
 import classes from "../styles/ArticleCard.module.css";
@@ -127,6 +129,14 @@ export default function ArticleCard(props: {
         </Center>
 
         <Group gap={8} mr={0}>
+          {userData?.[0].is_sub && (
+            <Tooltip label="Verified chef" withArrow position="bottom">
+              <IconChefHat
+                style={{ width: rem(18), height: rem(18) }}
+                color="orange"
+              />
+            </Tooltip>
+          )}
           <ActionIcon
             className={classes.action}
             variant="subtle"

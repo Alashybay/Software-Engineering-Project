@@ -11,12 +11,12 @@ import {
   Button,
   Stack,
   Divider,
-  Text
+  Text,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import { Placemark, YMaps } from "@pbe/react-yandex-maps";
-import { useRef, FormEvent, useState } from "react";
+import { useRef, FormEvent, useState, use, useEffect } from "react";
 import emailjs from "@emailjs/browser";
 import { Map } from "@pbe/react-yandex-maps";
 
@@ -85,10 +85,12 @@ export default function Page() {
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
 
-  navigator.geolocation.getCurrentPosition((position) => {
-    setLatitude(position.coords.latitude);
-    setLongitude(position.coords.longitude);
-  });
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      setLatitude(position.coords.latitude);
+      setLongitude(position.coords.longitude);
+    });
+  }, [navigator.geolocation.getCurrentPosition]);
 
   return (
     <Layout>
@@ -103,19 +105,21 @@ export default function Page() {
         >
           Find us on the map
         </Title>
-        <Text ta="center" c="dimmed">Red pin is your current location and Black pin is our head office</Text>
+        <Text ta="center" c="dimmed">
+          Red pin is your current location and Black pin is our head office
+        </Text>
         <YMaps>
           <Map
             language="en_US"
             defaultState={{
-              center: [38.192329, 15.555520],
+              center: [38.192329, 15.55552],
               zoom: 14,
             }}
             width="100%"
             height={400}
           >
             <Placemark
-              geometry={[38.192329, 15.555520]}
+              geometry={[38.192329, 15.55552]}
               options={{
                 iconImageSize: [35, 35],
                 iconImageOffset: [-15, -15],

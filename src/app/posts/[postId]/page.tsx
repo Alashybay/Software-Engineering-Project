@@ -22,7 +22,7 @@ import {
 } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { use, useCallback, useEffect, useState } from "react";
 import classes from "../../../styles/ActionsGrid.module.css";
 import { notifications } from "@mantine/notifications";
 import { IngredientTable } from "@/src/components/ingredientTable";
@@ -43,6 +43,10 @@ export default function Page() {
     currentPost?.recipe.ingredients
   );
 
+  useEffect(() => {
+    setCurrentRecipe(currentPost?.recipe.ingredients);
+  }, [currentPost]);
+  
   const handleDelete = useCallback(() => {
     deletePost.mutate(Number(post.postId));
     route.push("/posts");

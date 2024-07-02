@@ -29,7 +29,7 @@ const roleColors: Record<string, string> = {
 
 export default function Page() {
   const [selectedUser, setSelectedUser] = useState<User | undefined>(undefined);
-  const [opened, { open, close }] = useDisclosure(false); 
+  const [opened, { open, close }] = useDisclosure(false);
   const { data: users, isLoading, error } = useFetchUsers();
   const deleteUserMutation = useDeleteUser();
 
@@ -94,7 +94,9 @@ export default function Page() {
         </Anchor>
       </Table.Td>
       <Table.Td>
-        <Text fz="sm">{item?.phone ?? <Text c="dimmed">not given</Text>}</Text>
+        <Badge variant="dot" color={item?.is_sub ? "green" : "red"}>
+          {item?.is_sub ? "Subscribed" : "Not subscribed"}
+        </Badge>
       </Table.Td>
       <Table.Td>
         <Group gap={0} justify="flex-end">
@@ -134,7 +136,7 @@ export default function Page() {
                 <Table.Th>User</Table.Th>
                 <Table.Th>Role</Table.Th>
                 <Table.Th>Email</Table.Th>
-                <Table.Th>Phone</Table.Th>
+                <Table.Th>Subscription</Table.Th>
                 <Table.Th />
               </Table.Tr>
             </Table.Thead>
