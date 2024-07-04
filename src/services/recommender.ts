@@ -99,16 +99,17 @@ class TfIdf {
 
 export class RecommenderSystem {
   private posts: Post[];
-  private tfidfModel!: TfIdf;
+  private tfidfModel: TfIdf;
 
   constructor(posts: Post[]) {
     this.posts = posts;
+    this.tfidfModel = new TfIdf([]); // Initialize with an empty array first
     this.initializeTfidfModel();
   }
 
   private initializeTfidfModel(): void {
     const docs = this.posts.map(post => `${post.recipe.cuisine} ${post.recipe.ingredients.map(ingredient => ingredient.name).join(' ')}`);
-    this.tfidfModel = new TfIdf(docs);
+    this.tfidfModel = new TfIdf(docs); // Reassign with actual documents
   }
 
   public getRecommendedPosts(preferences?: Preferences): Post[] {
@@ -120,20 +121,19 @@ export class RecommenderSystem {
 
     return this.posts.filter(post => {
       const recipe = post.recipe;
-      const matchesCuisine = cuisines.length === 0 || cuisines.some(cuisine => cuisine.toLowerCase() === recipe.cuisine.toLowerCase());
-      const matchesIngredients = ingredients.length === 0 || recipe.ingredients.some(ingredient =>
-        ingredients.includes(ingredient.name.toLowerCase())
-      );
       const avoidsAllergies = allergies.length === 0 || recipe.ingredients.every(ingredient =>
         !allergies.includes(ingredient.name.toLowerCase())
       );
-      const matchesGlutenFree = !glutenFreeOnly || recipe.isGlutenFree;
 
-      if (matchesCuisine && matchesIngredients && avoidsAllergies && matchesGlutenFree) {
-        const docIndex = this.posts.indexOf(post);
+      if (avoidsAllergies) {
         const doc1 = `${cuisines.join(' ')} ${ingredients.join(' ')}`;
-        const similarity = this.tfidfModel.calculateSimilarity(docIndex, docIndex);
-        return similarity > 0.1; // Adjust threshold as needed
+        const docIndex = this.posts.indexOf(post);
+
+        // Ensure docIndex is valid and exists in tfidfModel
+        if (docIndex !== -1) {
+          const similarity = this.tfidfModel.calculateSimilarity(docIndex, docIndex);
+          return similarity > 0.1; // Adjust threshold as needed
+        }
       }
 
       return false;
