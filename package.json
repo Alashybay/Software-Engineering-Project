@@ -34,6 +34,7 @@
     "axios": "^1.7.2",
     "dayjs": "^1.11.11",
     "embla-carousel-react": "^8.1.0",
+    "natural": "^7.0.7",
     "next": "14.2.3",
     "next-auth": "^4.24.7",
     "node-fetch": "^3.3.2",
