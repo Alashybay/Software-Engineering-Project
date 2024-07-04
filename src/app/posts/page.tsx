@@ -6,6 +6,7 @@ import { categories } from "@/src/constants/categories";
 import { useFetchPosts } from "@/src/hooks/useGetPosts";
 import { useFetchUsers } from "@/src/hooks/useGetUsers";
 import { updateClickCount } from "@/src/services/api";
+import { RecommenderSystem } from "@/src/services/recommender";
 import { Post } from "@/src/typings/post";
 import { getRecomm } from "@/src/utils/getRecomm";
 import { updateTrendingRecipe } from "@/src/utils/mostViewed";
@@ -42,14 +43,18 @@ export default function Page() {
   }, [data]);
 
   const showRecomms = useCallback(() => {
+    const recommender = new RecommenderSystem(data ?? []); // Initialize recommender system
     const filteredPosts = recommended
-      ? getRecomm(data ?? [], userInfo?.[0]?.user_preference)
+      ? recommender.getRecommendedPosts(userInfo?.[0]?.user_preference)
       : data;
+
     console.log(filteredPosts);
 
     setPosts(filteredPosts);
     setRecommended(!recommended);
   }, [data, recommended, userInfo]);
+
+  console.log(posts);
 
   const searchPosts = useCallback(() => {
     if (searchKeyword.trim() === "") {
