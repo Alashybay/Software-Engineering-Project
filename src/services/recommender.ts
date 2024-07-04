@@ -64,10 +64,13 @@ class TfIdf {
     return this.tfidfValues[docIndex];
   }
 
-  public calculateSimilarity(doc1: TfIdfValues, doc2: TfIdfValues): number {
+  public calculateSimilarity(doc1Index: number, doc2Index: number): number {
+    const tfidf1 = this.getTfIdf(doc1Index);
+    const tfidf2 = this.getTfIdf(doc2Index);
+
     const uniqueTerms = new Set([
-      ...Object.keys(doc1),
-      ...Object.keys(doc2),
+      ...Object.keys(tfidf1),
+      ...Object.keys(tfidf2),
     ]);
 
     let dotProduct = 0;
@@ -75,8 +78,8 @@ class TfIdf {
     let magnitude2 = 0;
 
     uniqueTerms.forEach(term => {
-      const tfidf1Value = doc1[term] || 0;
-      const tfidf2Value = doc2[term] || 0;
+      const tfidf1Value = tfidf1[term] || 0;
+      const tfidf2Value = tfidf2[term] || 0;
 
       dotProduct += tfidf1Value * tfidf2Value;
       magnitude1 += tfidf1Value * tfidf1Value;
@@ -116,19 +119,21 @@ export class RecommenderSystem {
 
     const { cuisines = [], ingredients = [], allergies = [], glutenFreeOnly = false } = preferences;
 
-    const preferenceDoc = `${cuisines.join(' ')} ${ingredients.join(' ')}`;
-    const preferenceTfIdf = new TfIdf([preferenceDoc]).getTfIdf(0);
-
-    return this.posts.filter((post, index) => {
+    return this.posts.filter(post => {
       const recipe = post.recipe;
       const avoidsAllergies = allergies.length === 0 || recipe.ingredients.every(ingredient =>
         !allergies.includes(ingredient.name.toLowerCase())
       );
 
       if (avoidsAllergies) {
-        const postTfIdf = this.tfidfModel.getTfIdf(index);
-        const similarity = this.tfidfModel.calculateSimilarity(preferenceTfIdf, postTfIdf);
-        return similarity > 0.1; // Adjust threshold as needed
+        const doc1 = `${cuisines.join(' ')} ${ingredients.join(' ')}`;
+        const docIndex = this.posts.indexOf(post);
+
+        // Ensure docIndex is valid and exists in tfidfModel
+        if (docIndex !== -1) {
+          const similarity = this.tfidfModel.calculateSimilarity(docIndex, docIndex);
+          return similarity > 0.1; // Adjust threshold as needed
+        }
       }
 
       return false;
